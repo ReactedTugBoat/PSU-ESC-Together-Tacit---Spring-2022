@@ -3,29 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-
 public class UndoChanges : MonoBehaviour
 {
-    public InputDeviceCharacteristics rightControllerCharacteristics;
-    private InputDevice rightController;
+    public InputDevice leftController;
+    public InputDevice rightController;
+    private bool leftFound = false;
+    private bool rightFound = false;
+    [SerializeField] bool drawEnabled = false;
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Set the needed characteristics to those of the right VR controller.
-        List<InputDevice> devices = new List<InputDevice>();
-        InputDevices.GetDevicesWithCharacteristics(rightControllerCharacteristics, devices);
-        rightController = devices[0];
+        // FIND THE LEFT AND RIGHT CONTROLLERS.
+        List<InputDevice> leftDevices = new List<InputDevice>();
+        InputDeviceCharacteristics leftControllerCharacteristics = InputDeviceCharacteristics.Left;
+        InputDevices.GetDevicesWithCharacteristics(leftControllerCharacteristics, leftDevices);
+        // If a device is found, store it within a local variable.
+        if (leftDevices.Count > 0) {
+            leftFound = true;
+            leftController = leftDevices[0];
+        }
+
+        List<InputDevice> rightDevices = new List<InputDevice>();
+        InputDeviceCharacteristics rightControllerCharacteristics = InputDeviceCharacteristics.Right;
+        InputDevices.GetDevicesWithCharacteristics(rightControllerCharacteristics, rightDevices);
+        // If a device is found, store it within a local variable.
+        if (rightDevices.Count > 0) {
+            rightFound = true;
+            rightController = rightDevices[0];
+        }
+
+        Debug.Log("Left found: " + leftFound);
+        Debug.Log("Right found: " + rightFound);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Check both controllers' primary button values.
-        if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool isPressed))
+        // Check the right controllers' primary button value to see
+        // if a user has pressed it. If so, reset the sculpture.
+        if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryIsPressed))
         {
             // If a button is pressed...
-            if (isPressed)
+            if (primaryIsPressed)
             {
                 // Set all meshes to visible.
                 SetAllChildrenVisible();
@@ -36,10 +55,26 @@ public class UndoChanges : MonoBehaviour
         }
     }
 
+    public void ToggleDrawing() {
+        if (drawEnabled) {
+            drawEnabled = false;
+        } else {
+            drawEnabled = true;
+        }
+    }
+
+    public bool IsDrawEnabled() {
+        if (drawEnabled) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // Set all children objects to visible.
     // NOTE: There is currently an error in the naming of the blocks, such that 'Block Plane' is
     // conflated with 'Block Row'. In the future, those two should be flipped.
-    void SetAllChildrenVisible()
+    private void SetAllChildrenVisible()
     {
         // Check each Block Plane
         foreach (Transform plane in transform)
