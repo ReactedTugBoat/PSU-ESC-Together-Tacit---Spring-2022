@@ -16,32 +16,42 @@ public class HandCarvingTool : MonoBehaviour
     // Game object components.
     private MeshRenderer meshRenderer = null;
     private XRBaseInteractable interactable = null;
+    // VR Input Device objects.
+    private InputDevice leftController;
+    private InputDevice rightController;
 
     private void Start()
     {
         // LOCATE THE MESH RENDERER FOR THIS GAMEOBJECT.
         meshRenderer = GetComponent<MeshRenderer>();
 
-        // FIND THE GREATEST PARENT ART BLOCK.
+        // FIND DERIVATIVES OF THE GREATEST PARENT OBJECT.
         parentArtBlock = GameObject.Find("/Art Blocks");
 
-        // ADD A LISTENER FOR WHEN A HAND TOUCHES THIS BLOCK.
+        // Track the largest parent to find whether drawing is enabled.
+        parentScript = parentArtBlock.GetComponent<UndoChanges>();
+
+        // Store the controller objects for the VR controllers.
+        leftController = parentScript.leftController;
+        rightController = parentScript.rightController;
+
+        // ADD A LISTENERS FOR WHEN A HAND ENTERS/EXITS THIS BLOCK.
         interactable = GetComponent<XRBaseInteractable>();
         interactable.onHoverEnter.AddListener(Draw);
+        interactable.onHoverEnter.AddListener(StartHaptic);
+        interactable.onHoverExit.AddListener(StopHaptic);
     }
 
     private void OnDestroy()
     {
         // Remove any listeners left on the object after it is destroyed.
         interactable.onHoverEnter.RemoveListener(Draw);
+        interactable.onHoverEnter.RemoveListener(StartHaptic);
+        interactable.onHoverExit.RemoveListener(StopHaptic);
     }
 
     private void Draw(XRBaseInteractor interactor)
     {
-
-        // Track the largest parent to find whether drawing is enabled.
-        parentScript = parentArtBlock.GetComponent<UndoChanges>();
-
         // If the parent isnt instantiated, log an error.
         if (parentScript == null) {
             Debug.LogError("parent not found.");
@@ -51,5 +61,17 @@ public class HandCarvingTool : MonoBehaviour
         if (parentScript.IsDrawEnabled()) {
             meshRenderer.enabled = false;
         }
+    }
+
+    private void StartHaptic(XRBaseInteractor interactor)
+    {
+        if (meshRenderer.enabled) {
+            leftController.SendHapticImpulse(0u, 0.2f, 9999f);
+        }
+    }
+
+    private void StopHaptic(XRBaseInteractor interactor)
+    {
+        leftController.StopHaptics();
     }
 }
