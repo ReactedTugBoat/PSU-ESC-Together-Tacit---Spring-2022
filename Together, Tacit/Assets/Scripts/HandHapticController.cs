@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public enum ControllerType {
     None,
@@ -19,10 +20,17 @@ public class HandHapticController : MonoBehaviour
     private InputDevice controller;
     private int currentBlockCount = 0;
     private int prevBlockCount = 0;
-
+    private XRDirectInteractor interactor = null;
 
     void Start()
     {
+        // LOCATE THE HAND'S INTERACTOR.
+        interactor = GetComponent<XRDirectInteractor>();
+
+        // ADD LISTENERS.
+        interactor.onHoverEnter.AddListener(IncreaseBlockCount);
+        interactor.onHoverExit.AddListener(DecreaseBlockCount);
+
         // FIND CONTROLLER CHARACTERISTICS.
         if (side == ControllerType.Left) {
             controllerCharacteristics = InputDeviceCharacteristics.Left;
@@ -46,6 +54,12 @@ public class HandHapticController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        interactor.onHoverEnter.RemoveListener(IncreaseBlockCount);
+        interactor.onHoverExit.RemoveListener(DecreaseBlockCount);
+    }
+
     void Update()
     {
         // COMPARE BLOCK COUNTS BETWEEN FRAMES.
@@ -64,11 +78,11 @@ public class HandHapticController : MonoBehaviour
         prevBlockCount = currentBlockCount;
     }
 
-    public void IncreaseBlockCount() {
+    public void IncreaseBlockCount(XRBaseInteractable interactable) {
         ++currentBlockCount;
     }
 
-    public void DecreaseBlockCount() {
+    public void DecreaseBlockCount(XRBaseInteractable interactable) {
         --currentBlockCount;
         if (currentBlockCount < 0) {
             Debug.LogError("Error: Number of blocks interacting with hand fell below 0.");

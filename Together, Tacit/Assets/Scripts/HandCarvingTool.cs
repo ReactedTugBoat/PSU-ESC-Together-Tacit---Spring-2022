@@ -76,17 +76,17 @@ public class HandCarvingTool : MonoBehaviour
 
     private void EnterBlock(XRBaseInteractor interactor)
     {
-        if (meshRenderer.enabled) {
-            leftControllerHaptics.IncreaseBlockCount();
-            rightControllerHaptics.IncreaseBlockCount();
-        }
+        // if (meshRenderer.enabled) {
+        //     leftControllerHaptics.IncreaseBlockCount();
+        //     rightControllerHaptics.IncreaseBlockCount();
+        // }
     }
 
     private void ExitBlock(XRBaseInteractor interactor)
     {
-        if (meshRenderer.enabled) {
-            leftControllerHaptics.DecreaseBlockCount();
-            rightControllerHaptics.DecreaseBlockCount();
-        }
+        // if (meshRenderer.enabled) {
+        //     leftControllerHaptics.DecreaseBlockCount();
+        //     rightControllerHaptics.DecreaseBlockCount();
+        // }
     }
 }
