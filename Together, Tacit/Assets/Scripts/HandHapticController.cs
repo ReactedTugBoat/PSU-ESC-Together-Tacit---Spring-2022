@@ -81,11 +81,11 @@ public class HandHapticController : MonoBehaviour
         controller.StopHaptics();
 
         // Send a short haptic pulse, slightly stronger than those used to find the scuplture.
-        controller.SendHapticImpulse(0u, 0.25f, 0.1f);
+        controller.SendHapticImpulse(0u, 0.3f, 0.1f);
     }
 
     private void BeginHaptics() {
-        controller.SendHapticImpulse(0u, 0.1f, 9999f);
+        controller.SendHapticImpulse(0u, 0.2f, 9999f);
     }
 
     private void EndHaptics() {
