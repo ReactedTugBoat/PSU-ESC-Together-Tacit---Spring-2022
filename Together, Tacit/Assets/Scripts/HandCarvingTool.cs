@@ -11,14 +11,19 @@ public class HandCarvingTool : MonoBehaviour
     // of the UndoChanges class from its greatest parent object.
     private GameObject parentArtBlock;
     private UndoChanges parentScript;
+    // In keep up with haptic feedback, functions are imported from
+    // the HandHapticController components of each hand individually.
+    // The names of these controllers will need to be updated accordingly, along with a leading '/' tag.
+    // TODO: Figure out a better way of storing these names...
+    private string leftControllerName = "LeftHand Controller";
+    private HandHapticController leftControllerHaptics;
+    private string rightControllerName = "RightHand Controller";
+    private HandHapticController rightControllerHaptics;
 
     // LOCAL VARIABLES.
     // Game object components.
     private MeshRenderer meshRenderer = null;
     private XRBaseInteractable interactable = null;
-    // VR Input Device objects.
-    private InputDevice leftController;
-    private InputDevice rightController;
 
     private void Start()
     {
@@ -31,23 +36,23 @@ public class HandCarvingTool : MonoBehaviour
         // Track the largest parent to find whether drawing is enabled.
         parentScript = parentArtBlock.GetComponent<UndoChanges>();
 
-        // Store the controller objects for the VR controllers.
-        leftController = parentScript.leftController;
-        rightController = parentScript.rightController;
+        // FIND THE HAPTIC SCRIPT OF BOTH VR CONTROLLERS.
+        leftControllerHaptics = GameObject.Find(leftControllerName).GetComponent<HandHapticController>();
+        rightControllerHaptics = GameObject.Find(rightControllerName).GetComponent<HandHapticController>();
 
         // ADD A LISTENERS FOR WHEN A HAND ENTERS/EXITS THIS BLOCK.
         interactable = GetComponent<XRBaseInteractable>();
         interactable.onHoverEnter.AddListener(Draw);
-        interactable.onHoverEnter.AddListener(StartHaptic);
-        interactable.onHoverExit.AddListener(StopHaptic);
+        interactable.onHoverEnter.AddListener(EnterBlock);
+        interactable.onHoverExit.AddListener(ExitBlock);
     }
 
     private void OnDestroy()
     {
         // Remove any listeners left on the object after it is destroyed.
         interactable.onHoverEnter.RemoveListener(Draw);
-        interactable.onHoverEnter.RemoveListener(StartHaptic);
-        interactable.onHoverExit.RemoveListener(StopHaptic);
+        interactable.onHoverEnter.RemoveListener(EnterBlock);
+        interactable.onHoverExit.RemoveListener(ExitBlock);
     }
 
     private void Draw(XRBaseInteractor interactor)
@@ -58,20 +63,30 @@ public class HandCarvingTool : MonoBehaviour
         }
 
         // If drawing is enabled, set the material to disabled.
-        if (parentScript.IsDrawEnabled()) {
+        if (parentScript.IsDrawEnabled() && meshRenderer.enabled) {
+            // Disable the material.
             meshRenderer.enabled = false;
+
+            // Send a haptic pulse to show the user a block as been deleted.
+            leftControllerHaptics.SendDeletePulse();
+            rightControllerHaptics.SendDeletePulse();
         }
     }
 
-    private void StartHaptic(XRBaseInteractor interactor)
+
+    private void EnterBlock(XRBaseInteractor interactor)
     {
         if (meshRenderer.enabled) {
-            leftController.SendHapticImpulse(0u, 0.2f, 9999f);
+            leftControllerHaptics.IncreaseBlockCount();
+            rightControllerHaptics.IncreaseBlockCount();
         }
     }
 
-    private void StopHaptic(XRBaseInteractor interactor)
+    private void ExitBlock(XRBaseInteractor interactor)
     {
-        leftController.StopHaptics();
+        if (meshRenderer.enabled) {
+            leftControllerHaptics.DecreaseBlockCount();
+            rightControllerHaptics.DecreaseBlockCount();
+        }
     }
 }
