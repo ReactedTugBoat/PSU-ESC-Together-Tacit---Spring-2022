@@ -31,7 +31,7 @@ public class HandCarvingTool : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
 
         // FIND DERIVATIVES OF THE GREATEST PARENT OBJECT.
-        parentArtBlock = GameObject.Find("/Art Blocks");
+        parentArtBlock = GameObject.Find("/Block Manager");
 
         // Track the largest parent to find whether drawing is enabled.
         parentScript = parentArtBlock.GetComponent<UndoChanges>();
@@ -43,16 +43,12 @@ public class HandCarvingTool : MonoBehaviour
         // ADD A LISTENERS FOR WHEN A HAND ENTERS/EXITS THIS BLOCK.
         interactable = GetComponent<XRBaseInteractable>();
         interactable.onHoverEnter.AddListener(Draw);
-        interactable.onHoverEnter.AddListener(EnterBlock);
-        interactable.onHoverExit.AddListener(ExitBlock);
     }
 
     private void OnDestroy()
     {
         // Remove any listeners left on the object after it is destroyed.
         interactable.onHoverEnter.RemoveListener(Draw);
-        interactable.onHoverEnter.RemoveListener(EnterBlock);
-        interactable.onHoverExit.RemoveListener(ExitBlock);
     }
 
     private void Draw(XRBaseInteractor interactor)
@@ -71,22 +67,5 @@ public class HandCarvingTool : MonoBehaviour
             leftControllerHaptics.SendDeletePulse();
             rightControllerHaptics.SendDeletePulse();
         }
-    }
-
-
-    private void EnterBlock(XRBaseInteractor interactor)
-    {
-        // if (meshRenderer.enabled) {
-        //     leftControllerHaptics.IncreaseBlockCount();
-        //     rightControllerHaptics.IncreaseBlockCount();
-        // }
-    }
-
-    private void ExitBlock(XRBaseInteractor interactor)
-    {
-        // if (meshRenderer.enabled) {
-        //     leftControllerHaptics.DecreaseBlockCount();
-        //     rightControllerHaptics.DecreaseBlockCount();
-        // }
     }
 }

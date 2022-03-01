@@ -41,10 +41,10 @@ public class UndoChanges : MonoBehaviour
     {
         // Check the right controllers' primary button value to see
         // if a user has pressed it. If so, reset the sculpture.
-        if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryIsPressed))
+        if (rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool secondaryIsPressed))
         {
             // If a button is pressed...
-            if (primaryIsPressed)
+            if (secondaryIsPressed)
             {
                 // Set all meshes to visible.
                 SetAllChildrenVisible();
@@ -55,11 +55,17 @@ public class UndoChanges : MonoBehaviour
         }
     }
 
-    public void ToggleDrawing() {
+    public void EnableDrawing() {
+        // Public method to enable drawing, if not previously enabled.
+        if (!drawEnabled) {
+            drawEnabled = true;
+        }
+    }
+
+    public void DisableDrawing() {
+        // Public method to disable drawing, if not previously disabled.
         if (drawEnabled) {
             drawEnabled = false;
-        } else {
-            drawEnabled = true;
         }
     }
 
@@ -72,24 +78,13 @@ public class UndoChanges : MonoBehaviour
     }
 
     // Set all children objects to visible.
-    // NOTE: There is currently an error in the naming of the blocks, such that 'Block Plane' is
-    // conflated with 'Block Row'. In the future, those two should be flipped.
     private void SetAllChildrenVisible()
     {
-        // Check each Block Plane
-        foreach (Transform plane in transform)
-        {
-            // Check each Block Row
-            foreach (Transform row in plane)
-            {
-                // Check each Block Part
-                foreach (Transform block in row)
-                {
-                    MeshRenderer meshRenderer = block.gameObject.GetComponent("MeshRenderer") as MeshRenderer;
-                    if (meshRenderer.enabled == false) {
-                        meshRenderer.enabled = true;
-                    }
-                }
+        // For each child, set the mesh renderer to enabled.
+        foreach (Transform block in transform) {
+            MeshRenderer meshRenderer = block.gameObject.GetComponent("MeshRenderer") as MeshRenderer;
+            if (!meshRenderer.enabled) {
+                meshRenderer.enabled = true;
             }
         }
     }

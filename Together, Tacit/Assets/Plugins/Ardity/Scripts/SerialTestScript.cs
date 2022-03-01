@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 /**
@@ -8,11 +9,15 @@ public class SerialTestScript : MonoBehaviour
 {
     public SerialController serialController;
     // TEMP: Currently set to a single strong pulse.
-    private long hapticString = 0b10100001000101101000;
+    byte[] byteString = new byte[3];
+    private string hapticString = "";
+    private int effect = 0;
 
     // Initialization
     void Start()
     {
+        byteString[0] = 0x68;
+        byteString[2] = 0x0a;
         serialController = GameObject.Find("SerialController").GetComponent<SerialController>();
 
         Debug.Log("Beginning connection, sending haptic codes.");
@@ -34,21 +39,27 @@ public class SerialTestScript : MonoBehaviour
         // Receive data
         //---------------------------------------------------------------------
 
-        // string message = serialController.ReadSerialMessage();
+        string message = serialController.ReadSerialMessage();
 
-        // // Check if the message is plain data or a connect/disconnect event.
-        // if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_CONNECTED))
-        //     Debug.Log("Connection established");
-        // else if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_DISCONNECTED))
-        //     Debug.Log("Connection attempt failed or disconnection detected");
-        // else
-        //     Debug.Log("Message arrived: " + message);
+        // Check if the message is plain data or a connect/disconnect event.
+        if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_CONNECTED))
+            Debug.Log("Connection established");
+        else if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_DISCONNECTED))
+            Debug.Log("Connection attempt failed or disconnection detected");
+        else
+            Debug.Log("Message arrived: " + message);
     }
 
     void SendHapticCode()
     {
         // When called, sends a haptic string to the COM port
-        Debug.Log("Sent haptic code: " + hapticString);
-        serialController.SendSerialMessage(hapticString);
+        byteString[1] = Convert.ToByte(effect);
+        effect = effect + 1;
+        if (effect>117)
+        {
+            effect = 0;
+        }
+        Debug.Log("Sending haptic code: " + BitConverter.ToString(byteString));
+        serialController.SendSerialMessage(byteString);
     }
 }
