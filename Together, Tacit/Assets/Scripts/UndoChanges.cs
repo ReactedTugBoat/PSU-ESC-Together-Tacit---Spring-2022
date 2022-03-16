@@ -10,6 +10,7 @@ public class UndoChanges : MonoBehaviour
     private bool leftFound = false;
     private bool rightFound = false;
     [SerializeField] bool drawEnabled = false;
+    [SerializeField] bool isAddEnabled = false;
 
     void Start()
     {
@@ -36,25 +37,6 @@ public class UndoChanges : MonoBehaviour
         Debug.Log("Right found: " + rightFound);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // Check the right controllers' primary button value to see
-        // if a user has pressed it. If so, reset the sculpture.
-        if (rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out bool secondaryIsPressed))
-        {
-            // If a button is pressed...
-            if (secondaryIsPressed)
-            {
-                // Set all meshes to visible.
-                SetAllChildrenVisible();
-
-                // Send a short haptic impulse.
-                rightController.SendHapticImpulse(0u, 0.7f, 0.2f);
-            }
-        }
-    }
-
     public void EnableDrawing() {
         // Public method to enable drawing, if not previously enabled.
         if (!drawEnabled) {
@@ -69,6 +51,17 @@ public class UndoChanges : MonoBehaviour
         }
     }
 
+    public void ToggleDrawingMode() {
+        if (isAddEnabled) {
+            isAddEnabled = false;
+        } else {
+            isAddEnabled = true;
+        }
+
+        // Send a short haptic impulse.
+        leftController.SendHapticImpulse(0u, 0.7f, 0.2f);
+    }
+
     public bool IsDrawEnabled() {
         if (drawEnabled) {
             return true;
@@ -77,8 +70,16 @@ public class UndoChanges : MonoBehaviour
         }
     }
 
+    public bool IsAddEnabled() {
+        if (isAddEnabled) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // Set all children objects to visible.
-    private void SetAllChildrenVisible()
+    public void SetAllChildrenVisible()
     {
         // For each child, set the mesh renderer to enabled.
         foreach (Transform block in transform) {
@@ -87,5 +88,10 @@ public class UndoChanges : MonoBehaviour
                 meshRenderer.enabled = true;
             }
         }
+
+        // Send a short haptic impulse.
+        rightController.SendHapticImpulse(0u, 0.7f, 0.2f);
     }
+
+
 }

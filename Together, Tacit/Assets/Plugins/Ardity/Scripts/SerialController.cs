@@ -140,7 +140,7 @@ public class SerialController : MonoBehaviour
     // Puts a message in the outgoing queue. The thread object will send the
     // message to the serial device when it considers it's appropriate.
     // ------------------------------------------------------------------------
-    public void SendSerialMessage(byte[] message)
+    public void SendSerialMessage(string message)
     {
         serialThread.SendMessage(message);
     }

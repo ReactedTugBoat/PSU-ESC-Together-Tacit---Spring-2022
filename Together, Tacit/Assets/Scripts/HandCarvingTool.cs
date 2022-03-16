@@ -42,30 +42,66 @@ public class HandCarvingTool : MonoBehaviour
 
         // ADD A LISTENERS FOR WHEN A HAND ENTERS/EXITS THIS BLOCK.
         interactable = GetComponent<XRBaseInteractable>();
-        interactable.onHoverEnter.AddListener(Draw);
+        interactable.onHoverEnter.AddListener(CarveOrAdd);
+        interactable.onHoverExit.AddListener(LowerBlockCount);
     }
 
     private void OnDestroy()
     {
         // Remove any listeners left on the object after it is destroyed.
-        interactable.onHoverEnter.RemoveListener(Draw);
+        interactable.onHoverEnter.RemoveListener(CarveOrAdd);
+        interactable.onHoverExit.RemoveListener(LowerBlockCount);
     }
 
-    private void Draw(XRBaseInteractor interactor)
+    private void LowerBlockCount(XRBaseInteractor interactor) {
+        // Upon leaving an interactable, lower the block count of the specific controller.
+        if (meshRenderer.enabled == true) {
+            interactor.GetComponentInParent<HandHapticController>().DecreaseBlockCount();
+        }
+    }
+
+    private void CarveOrAdd(XRBaseInteractor interactor)
     {
+        // Upon entering any interactable, check to see if its mesh renderer is enabled. If so,
+        // increase the block count of the interactor element.
+        if (meshRenderer.enabled == true) {
+            interactor.GetComponentInParent<HandHapticController>().IncreaseBlockCount();
+        }
+
+        // This method controls both carving and additive behaviors, depending on the user's selection.
         // If the parent isnt instantiated, log an error.
         if (parentScript == null) {
             Debug.LogError("parent not found.");
         }
 
-        // If drawing is enabled, set the material to disabled.
-        if (parentScript.IsDrawEnabled() && meshRenderer.enabled) {
-            // Disable the material.
-            meshRenderer.enabled = false;
+        // If the tool is set to carving away material...
+        if (!parentScript.IsAddEnabled()) {
+            // If drawing is enabled, set the material to disabled.
+            if (parentScript.IsDrawEnabled() && meshRenderer.enabled == true) {
+                // Disable the material.
+                meshRenderer.enabled = false;
 
-            // Send a haptic pulse to show the user a block as been deleted.
-            leftControllerHaptics.SendDeletePulse();
-            rightControllerHaptics.SendDeletePulse();
+                // Decrease the block count to stay consistent with the state of the mesh renderer.
+                interactor.GetComponentInParent<HandHapticController>().DecreaseBlockCount();
+
+                // Send a haptic pulse to show the user a block as been deleted.
+                interactor.GetComponentInParent<HandHapticController>().SendDeletePulse();
+            }
+        }
+        // Otherwise...
+        else {
+            // If drawing is enabled, set any disabled materials to enabled.
+            if (parentScript.IsDrawEnabled() && meshRenderer.enabled == false) {
+                // Enabled the material
+                meshRenderer.enabled = true;
+
+                // Increase the block count to stay consistent with the state of the mesh renderer.
+                interactor.GetComponentInParent<HandHapticController>().IncreaseBlockCount();
+
+                // Send a haptic pulse top show the user a block has been added back.
+                interactor.GetComponentInParent<HandHapticController>().SendAddPulse();
+
+            }
         }
     }
 }

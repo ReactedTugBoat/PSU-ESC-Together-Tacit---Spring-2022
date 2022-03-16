@@ -16,9 +16,6 @@ public class BlockManager : MonoBehaviour
     public float lengthInMeters;
     public float widthInMeters;
     public float heightInMeters;
-    // Offset value to lift the final structure above ground level.
-    // TODO: Allow this value to be changed at runtime, to the user's needs.
-    public float heightOffsetInMeters;
 
     // PRIVATE LOCAL VARIABLES.
     // Internal values for each block's x, y, and z scale.
@@ -29,47 +26,73 @@ public class BlockManager : MonoBehaviour
     private float xScale;
     private float yScale;
     private float zScale;
+    // Internal offset values to lift the final structure above ground level.
+    private float lengthOffsetInMeters;
+    private float widthOffsetInMeters;
+    private float heightOffsetInMeters;
+    // Tracker for GenerateSculpture to ensure it only runs once, and can only
+    // be run once the program has finished running its initialization.
+    public bool sculptureCanBeGenerated = false;
+    private bool hasSculptureBeenGenerated = false;
 
-    // Start is called before the first frame update
-    void Start()
+
+    // Method to generate the sculpture.
+    // Currently, this is limited so that it will only run one time.
+    public void GenerateSculpture(Vector3 currentHandPosition)
     {
-        // Calculate the width, length, and height of each block in the structure.
-        xScale = lengthInMeters / xResolution;
-        yScale = heightInMeters / yResolution;
-        zScale = widthInMeters / zResolution;
+        // If the sculpture has not been generated yet, run the below code.
+        if (sculptureCanBeGenerated && !hasSculptureBeenGenerated) {
+            // Calculate the width, length, and height of each block in the structure.
+            xScale = lengthInMeters / xResolution;
+            yScale = heightInMeters / yResolution;
+            zScale = widthInMeters / zResolution;
 
-        // Set the first block placement in space, based off of the total width/length and a
-        // set offset provided to the function before runtime.
-        xPosition = lengthInMeters / 2;
-        yPosition = (heightInMeters / 2) + heightOffsetInMeters;
-        zPosition = widthInMeters / 2;
+            // Calculate the offset for the sculpture from the x, y and z values of the current hand.
+            lengthOffsetInMeters = currentHandPosition.x - lengthInMeters;
+            heightOffsetInMeters = currentHandPosition.y - heightInMeters;
+            widthOffsetInMeters = currentHandPosition.z - widthInMeters;
 
+            // Set the first block placement in space, based off of the total width/length and a
+            // set offset calculated from the position of the right hand at runtime.
+            xPosition = (lengthInMeters / 2) + lengthOffsetInMeters;
+            yPosition = (heightInMeters / 2) + heightOffsetInMeters;
+            zPosition = (widthInMeters / 2) + widthOffsetInMeters;
 
-        // INSTANTIATE THE PREFAB STRUCTURE.
-        // Iterate through each dimension, creating blocks to the specified resolution.
-        for (int x = 0; x < xResolution; x++) {
+            // INSTANTIATE THE PREFAB STRUCTURE.
+            // Iterate through each dimension, creating blocks to the specified resolution.
+            for (int x = 0; x < xResolution; x++) {
 
-            for (int y = 0; y < yResolution; y++) {
+                for (int y = 0; y < yResolution; y++) {
 
-                for (int z = 0; z < zResolution; z++) {
-                    // Create a vector for the position of the block, using the resolution to calculate
-                    // its offset from the starting x, y, and z positions.
-                    Vector3 blockVector = new Vector3(
-                        xPosition + (x * xScale),
-                        yPosition + (y * yScale),
-                        zPosition + (z * zScale)
-                    );
+                    for (int z = 0; z < zResolution; z++) {
+                        // Create a vector for the position of the block, using the resolution to calculate
+                        // its offset from the starting x, y, and z positions.
+                        Vector3 blockVector = new Vector3(
+                            xPosition + (x * xScale),
+                            yPosition + (y * yScale),
+                            zPosition + (z * zScale)
+                        );
 
-                    // Instantiate the prefab at the given location in space. 
-                    GameObject block = Instantiate(blockPrefab, blockVector, Quaternion.identity);
+                        // Instantiate the prefab at the given location in space. 
+                        GameObject block = Instantiate(blockPrefab, blockVector, Quaternion.identity);
 
-                    // Set the scale of the created block as needed
-                    block.transform.localScale = new Vector3(xScale, yScale, zScale);
+                        // Set the scale of the created block as needed
+                        block.transform.localScale = new Vector3(xScale, yScale, zScale);
 
-                    // Set the new block as a child of the Block Manager parent.
-                    block.transform.parent = this.gameObject.transform;
+                        // Set the new block as a child of the Block Manager parent.
+                        block.transform.parent = this.gameObject.transform;
+                    }
                 }
             }
+
+            // Once complete, note that the sculpture has been generated.
+            hasSculptureBeenGenerated = true;
         }
+
+    }
+
+    // Public method to enable sculpture generation.
+    public void EnableSculptureGeneration() {
+        sculptureCanBeGenerated = true;
     }
 }
