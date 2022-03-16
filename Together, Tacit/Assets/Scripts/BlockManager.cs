@@ -32,14 +32,15 @@ public class BlockManager : MonoBehaviour
     private float heightOffsetInMeters;
     // Tracker for GenerateSculpture to ensure it only runs once, and can only
     // be run once the program has finished running its initialization.
-    public bool sculptureCanBeGenerated = false;
-    private bool hasSculptureBeenGenerated = false;
+    private bool sculptureCanBeGenerated = true;
+    public bool hasSculptureBeenGenerated = false;
 
 
     // Method to generate the sculpture.
     // Currently, this is limited so that it will only run one time.
     public void GenerateSculpture(Vector3 currentHandPosition)
     {
+        Debug.Log("Starting Generation");
         // If the sculpture has not been generated yet, run the below code.
         if (sculptureCanBeGenerated && !hasSculptureBeenGenerated) {
             // Calculate the width, length, and height of each block in the structure.

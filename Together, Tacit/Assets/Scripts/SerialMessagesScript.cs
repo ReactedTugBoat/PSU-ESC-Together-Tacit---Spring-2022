@@ -34,19 +34,26 @@ public class SerialMessagesScript : MonoBehaviour
     [SerializeField] private ControllerState indexState;
     [SerializeField] private ControllerState middleState;
 
+    private int count = 0;
+    // public bool sendMessages = false;
+
     void Start() {
         // Initialize the serial controller.
         serialController = GameObject.Find(controllerSide + "SerialController").GetComponent<SerialController>();
+        if (serialController == null) {
+            Debug.LogError("Serial Controller Not Found");
+        }
 
         // BEGIN CONTROLLER INITIALIZATION.
         // Before the program is run, the serial connection needs to initialize a number of values
         // for each controller - communicated to and from the Arduino code.
         // In order to prevent blocking issues, both controllers will have their initializations run
         // as a part of coroutines, using keyboard inputs to help with moving through the steps.
+        // StartCoroutine(Initaliztion());
 
     }
     
-    void Update() {
+   void Update() {
         // SENDING MESSAGES.
         // Every frame, send a message containing data for each finger.
         // The data is sent as a string in the following format...
@@ -64,21 +71,31 @@ public class SerialMessagesScript : MonoBehaviour
         //
         // To start, gather the states of each finger at the current frame.
         // Todo: Calibrate finger states and store them. For now, these values are simply hard coded.
-        thumbState = ControllerState.Inside;
-        indexState = ControllerState.Inside;
-        middleState = ControllerState.Inside;
+        thumbState = controller.controllerState;
+        indexState = controller.controllerState;
+        middleState = controller.controllerState;
         // Once calculated, use the finger states to generate haptic strings for both fingers.
         string hapticString;
         BuildHapticMessage(controller, thumbState, indexState, middleState, out hapticString);
         
-        // Send the completed haptic messages to the necessary serial port for parsing.
-        serialController.SendSerialMessage(hapticString);
+        if (count == 0) {
+            // Send the completed haptic messages to the necessary serial port for parsing.
+            serialController.SendSerialMessage(hapticString);
+            // Debug.Log("Sending Serial Message: " + hapticString);
+            count = 0;
+            return;
+        }
+
+        count++;
     }
 
     // Whenever a message arrives from the Adruino (Ideally, once a frame, though actual timings may vary),
     // parse the message for flex sensor values and store those locally.
     void OnMessageArrived(string msg)
     {
+        if (msg == "") {
+            return;
+        }
         // Debug.Log("Message Arrived: " + msg);
         // Check to see if the message begins with a "f" character, indicating a message including flex sensor values.
         if (msg[0] == 'f') {
@@ -105,6 +122,14 @@ public class SerialMessagesScript : MonoBehaviour
         }
     }
 
+    void OnConnectionEvent(bool success)
+    {
+        if (success)
+            Debug.Log("Connection established");
+        else
+            Debug.Log("Connection attempt failed or disconnection detected");
+    }
+
     private void BuildHapticMessage(HandHapticController controller,
                                         ControllerState thumb, 
                                         ControllerState index, 
@@ -112,7 +137,7 @@ public class SerialMessagesScript : MonoBehaviour
                                         out string hapticString) 
     {
         // Create an introductory string, beginning with a "d" character.
-        hapticString = "h";
+        hapticString = "d";
 
         // Store the provided finger states in an array
         ControllerState[] fingerArray = new ControllerState[] {thumb, index, middle};
@@ -125,22 +150,27 @@ public class SerialMessagesScript : MonoBehaviour
 
             // If the current finger is far outside, send a zeroed haptic message (i.e. no haptics).
             if (state == ControllerState.FarOutside) {
-                hapticString += "o000";
+                // hapticString += "o000";
+                hapticString = "h";
+                return;
             }
             // If the current finger is outside, send a haptic message according to current distance from blocks.
             else if (state == ControllerState.Outside) {
                 // Adjust the current distance to be an integer value between 0 and 255
-                int adjustedBlockDistance = (int)Math.Floor(controller.shortestDistance * 25500);
+                float adjustedBlockDistance = controller.shortestDistance;
+                float maxDistance = 0.4f;
                 if (adjustedBlockDistance < 0) {
                     adjustedBlockDistance = 0;
                 }
-                if (adjustedBlockDistance > 255) {
-                    adjustedBlockDistance = 255;
+                if (adjustedBlockDistance > maxDistance) {
+                    adjustedBlockDistance = maxDistance;
                 }
+                int outsideMag = (int)Math.Floor((double)(255 * (maxDistance - adjustedBlockDistance) / adjustedBlockDistance));
+                Debug.Log("Closest distance: " + controller.shortestDistance + "\nOutside Mag: " + outsideMag);
 
                 // Add any leading zeros needed to the frequency value (must be three digits long).
                 string leadingZeros = "";
-                int numLength = adjustedBlockDistance.ToString().Length;
+                int numLength = outsideMag.ToString().Length;
                 if (numLength == 1) {
                     leadingZeros = "00";
                 } else if (numLength == 2) {
@@ -148,12 +178,12 @@ public class SerialMessagesScript : MonoBehaviour
                 }
 
                 // Add all calculated parts to the haptic string.
-                hapticString += String.Format("o{0}{1}", leadingZeros, adjustedBlockDistance);
+                hapticString += String.Format("o{0}{1}", leadingZeros, outsideMag);
             }
             // If current finger is inside, snd a haptic message according to the hand's current velocity.
             // TODO: Incorperate velocity. Currently, it just sets the haptics to a set value (100).
             else if (state == ControllerState.Inside) {
-                hapticString += "i100";
+                hapticString += "i255";
             }
             // If current finger is entering, exiting, or tooling, send a haptic message accordingly.
             else if (state == ControllerState.Entering) {
@@ -170,7 +200,28 @@ public class SerialMessagesScript : MonoBehaviour
                 hapticString = "Error";
                 return;
             }
+
         }
+
+        // hapticString += "\n";
+
+    }
+
+    // Private method to initialize the rotation of the controllers and the max/min value of each flex sensor.
+    // Utilizes a coroutine to block for button inputs.
+    IEnumerator Initaliztion() {
+        Debug.Log(controllerSide + " Initalization!\n" + "Calibrating " + controllerSide + " controller, press A to continue");
+
+        // Wait for a keyboard press.
+        while(!Input.GetKeyDown(KeyCode.A)) {
+            yield return null;
+        }
+
+        // Set the rotation of the hand model to the current rotation of the controller.
+        GameObject hand = GameObject.Find(controllerSide + "Hand Controller");
+        hand.GetComponentInChildren<Transform>().transform.rotation = hand.transform.rotation;
+
+        Debug.Log(controllerSide + " Rotation Set!");
 
     }
 
