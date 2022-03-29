@@ -166,7 +166,7 @@ public class SerialMessagesScript : MonoBehaviour
                     adjustedBlockDistance = maxDistance;
                 }
                 int outsideMag = (int)Math.Floor((double)(255 * (maxDistance - adjustedBlockDistance) / adjustedBlockDistance));
-                Debug.Log("Closest distance: " + controller.shortestDistance + "\nOutside Mag: " + outsideMag);
+                // Debug.Log("Closest distance: " + controller.shortestDistance + "\nOutside Mag: " + outsideMag);
 
                 // Add any leading zeros needed to the frequency value (must be three digits long).
                 string leadingZeros = "";

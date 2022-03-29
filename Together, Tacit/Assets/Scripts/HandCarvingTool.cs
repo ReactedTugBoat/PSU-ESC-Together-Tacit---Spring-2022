@@ -104,4 +104,8 @@ public class HandCarvingTool : MonoBehaviour
             }
         }
     }
+
+    public void EnterMesh() {
+        Debug.Log("Mesh Entered");
+    }
 }
