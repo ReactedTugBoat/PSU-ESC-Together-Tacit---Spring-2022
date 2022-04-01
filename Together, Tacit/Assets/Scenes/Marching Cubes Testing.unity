@@ -225,12 +225,6 @@ MonoBehaviour:
   thumbState: 0
   indexState: 0
   middleState: 0
---- !u!4 &247996488 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-    type: 3}
-  m_PrefabInstance: {fileID: 2004827130}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &299938603
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,6 +530,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 799841781}
+  - component: {fileID: 799841783}
+  - component: {fileID: 799841782}
   - component: {fileID: 799841780}
   m_Layer: 0
   m_Name: Marching Cubes Test
@@ -560,7 +556,8 @@ MonoBehaviour:
   mode: 0
   startingModel: 1
   playAreaDimensions: 2
-  sculptureDimensions: 0.5
+  sculptureDimensions: 0.3
+  toolRadius: 0.05
 --- !u!4 &799841781
 Transform:
   m_ObjectHideFlags: 0
@@ -575,6 +572,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &799841782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799841779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3055a42612f1b4089dfc813aef9839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 2005488413}
+  bindings:
+  - button: 0
+    pressType: 2
+    OnActive:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &799841783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799841779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3055a42612f1b4089dfc813aef9839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 2102874067}
+  bindings:
+  - button: 0
+    pressType: 2
+    OnActive:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1001 &1108080915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -895,6 +930,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!4 &1186104300 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+    type: 3}
+  m_PrefabInstance: {fileID: 1708154284}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1279084893
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,81 +1078,150 @@ MonoBehaviour:
   m_CameraGameObject: {fileID: 525126952}
   m_TrackingSpace: 1
   m_CameraYOffset: 1.36144
---- !u!1001 &1639951916
+--- !u!1001 &1458452250
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 2102874066}
     m_Modifications:
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0075
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.0343
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.0359
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.0015111568
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.0050655385
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.9525829
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.30423328
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 35.425003
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 179.98601
       objectReference: {fileID: 0}
-    - target: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.614
       objectReference: {fileID: 0}
-    - target: {fileID: 7523567926693483842, guid: b2ec64201e9ec6c4ba155691307536cb,
+    - target: {fileID: 4245457492171364763, guid: c836783e3928a624e9ff9c70d4f21606,
         type: 3}
       propertyPath: m_Name
-      value: Oculus Touch Controller - Left
+      value: Oculus Quest Controller - Left
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b2ec64201e9ec6c4ba155691307536cb, type: 3}
---- !u!4 &1639951917 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: c836783e3928a624e9ff9c70d4f21606, type: 3}
+--- !u!4 &1541072038 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 6787572191161526097, guid: b2ec64201e9ec6c4ba155691307536cb,
+  m_CorrespondingSourceObject: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606,
     type: 3}
-  m_PrefabInstance: {fileID: 1639951916}
+  m_PrefabInstance: {fileID: 1458452250}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1708154284
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2005488409}
+    m_Modifications:
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0075
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0343
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0359
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0015111568
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0050655385
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9525829
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.30423328
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 35.425003
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 179.98601
+      objectReference: {fileID: 0}
+    - target: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -0.614
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024951872544157354, guid: cfa8dc06d611ba340b06bbefba58ee46,
+        type: 3}
+      propertyPath: m_Name
+      value: Oculus Quest Controller - Right
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cfa8dc06d611ba340b06bbefba58ee46, type: 3}
 --- !u!1 &1909495199
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,8 +1233,6 @@ GameObject:
   - component: {fileID: 1909495204}
   - component: {fileID: 1909495203}
   - component: {fileID: 1909495202}
-  - component: {fileID: 1909495201}
-  - component: {fileID: 1909495200}
   m_Layer: 0
   m_Name: Block Manager
   m_TagString: Untagged
@@ -1132,170 +1240,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1909495200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1909495199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c3055a42612f1b4089dfc813aef9839, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 2102874067}
-  bindings:
-  - button: 2
-    pressType: 0
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1909495202}
-          m_TargetAssemblyTypeName: UndoChanges, Assembly-CSharp
-          m_MethodName: EnableDrawing
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - button: 2
-    pressType: 1
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1909495202}
-          m_TargetAssemblyTypeName: UndoChanges, Assembly-CSharp
-          m_MethodName: DisableDrawing
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - button: 4
-    pressType: 0
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1909495202}
-          m_TargetAssemblyTypeName: UndoChanges, Assembly-CSharp
-          m_MethodName: ToggleDrawingMode
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - button: 0
-    pressType: 0
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2102874063}
-          m_TargetAssemblyTypeName: HandHapticController, Assembly-CSharp
-          m_MethodName: GenerateSculpture
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
---- !u!114 &1909495201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1909495199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c3055a42612f1b4089dfc813aef9839, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 2005488413}
-  bindings:
-  - button: 2
-    pressType: 0
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1909495202}
-          m_TargetAssemblyTypeName: UndoChanges, Assembly-CSharp
-          m_MethodName: EnableDrawing
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - button: 2
-    pressType: 1
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1909495202}
-          m_TargetAssemblyTypeName: UndoChanges, Assembly-CSharp
-          m_MethodName: DisableDrawing
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - button: 4
-    pressType: 0
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1909495202}
-          m_TargetAssemblyTypeName: UndoChanges, Assembly-CSharp
-          m_MethodName: SetAllChildrenVisible
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - button: 0
-    pressType: 0
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2005488411}
-          m_TargetAssemblyTypeName: HandHapticController, Assembly-CSharp
-          m_MethodName: GenerateSculpture
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &1909495202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1345,75 +1289,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2004827130
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 2005488409}
-    m_Modifications:
-    - target: {fileID: 5191550869875014123, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_Name
-      value: Oculus Touch Controller - Right
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.0075
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0343
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.0359
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.0015111568
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.0050655385
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.9525829
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.30423328
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 35.425003
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 179.98601
-      objectReference: {fileID: 0}
-    - target: {fileID: 9103817578321791992, guid: 0efe8147fc0009d4ea3039b2374d927c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -0.614
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0efe8147fc0009d4ea3039b2374d927c, type: 3}
 --- !u!1 &2005488408
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,8 +1300,9 @@ GameObject:
   - component: {fileID: 2005488409}
   - component: {fileID: 2005488413}
   - component: {fileID: 2005488412}
-  - component: {fileID: 2005488411}
   - component: {fileID: 2005488410}
+  - component: {fileID: 2005488411}
+  - component: {fileID: 2005488414}
   m_Layer: 0
   m_Name: RightHand Controller
   m_TagString: Untagged
@@ -1445,12 +1321,12 @@ Transform:
   m_LocalPosition: {x: 0.030388243, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 247996488}
+  - {fileID: 1186104300}
   m_Father: {fileID: 586500250}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &2005488410
-MeshCollider:
+--- !u!135 &2005488410
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1459,10 +1335,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: d0c255d07fd68f14b94e55d388e7e6bb, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.046499737
+  m_Center: {x: -0.006085269, y: 0, z: -0.006083049}
 --- !u!114 &2005488411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,10 +1373,34 @@ MonoBehaviour:
   m_StartingSelectedInteractable: {fileID: 0}
   m_OnHoverEnter:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2005488411}
+        m_TargetAssemblyTypeName: HandHapticController, Assembly-CSharp
+        m_MethodName: IncreaseBlockCount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnHoverExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2005488411}
+        m_TargetAssemblyTypeName: HandHapticController, Assembly-CSharp
+        m_MethodName: DecreaseBlockCount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSelectEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -1554,6 +1453,19 @@ MonoBehaviour:
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
+--- !u!114 &2005488414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005488408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2297841b5b38543a175a75b4ec8e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockManager: {fileID: 799841779}
 --- !u!1 &2102874062
 GameObject:
   m_ObjectHideFlags: 0
@@ -1567,6 +1479,7 @@ GameObject:
   - component: {fileID: 2102874065}
   - component: {fileID: 2102874064}
   - component: {fileID: 2102874063}
+  - component: {fileID: 2102874068}
   m_Layer: 0
   m_Name: LeftHand Controller
   m_TagString: Untagged
@@ -1600,8 +1513,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.04825595
-  m_Center: {x: -0.028156018, y: -0.036705658, z: 0.0008433759}
+  m_Radius: 0.04761362
+  m_Center: {x: -0.013897657, y: -0.010366552, z: -0.0011355653}
 --- !u!114 &2102874065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1622,10 +1535,34 @@ MonoBehaviour:
   m_StartingSelectedInteractable: {fileID: 0}
   m_OnHoverEnter:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2102874063}
+        m_TargetAssemblyTypeName: HandHapticController, Assembly-CSharp
+        m_MethodName: IncreaseBlockCount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnHoverExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2102874063}
+        m_TargetAssemblyTypeName: HandHapticController, Assembly-CSharp
+        m_MethodName: DecreaseBlockCount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSelectEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -1665,7 +1602,7 @@ Transform:
   m_LocalPosition: {x: -0.0016245302, y: 0.0059142653, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1639951917}
+  - {fileID: 1541072038}
   m_Father: {fileID: 586500250}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1693,3 +1630,16 @@ MonoBehaviour:
   m_AnimateModel: 0
   m_ModelSelectTransition: 
   m_ModelDeSelectTransition: 
+--- !u!114 &2102874068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102874062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2297841b5b38543a175a75b4ec8e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockManager: {fileID: 799841779}

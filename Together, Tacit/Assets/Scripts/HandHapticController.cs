@@ -148,11 +148,12 @@ public class HandHapticController : MonoBehaviour
     }
 
     public void IncreaseBlockCount() {
-        ++currentBlockCount;
+        // Debug.Log("Increasing block count");
+        currentBlockCount++;
     }
 
     public void DecreaseBlockCount() {
-        --currentBlockCount;
+        currentBlockCount--;
         if (currentBlockCount < 0) {
             Debug.LogError("Error: Number of blocks interacting with hand fell below 0.");
         }
