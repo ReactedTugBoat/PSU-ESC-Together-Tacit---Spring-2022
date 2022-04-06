@@ -140,7 +140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -266,7 +266,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &304802167
 GameObject:
@@ -393,7 +393,7 @@ Transform:
   m_Children:
   - {fileID: 1279084894}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &525126952
 GameObject:
@@ -530,9 +530,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 799841781}
-  - component: {fileID: 799841783}
-  - component: {fileID: 799841782}
   - component: {fileID: 799841780}
+  - component: {fileID: 799841782}
+  - component: {fileID: 799841783}
   m_Layer: 0
   m_Name: Marching Cubes Test
   m_TagString: Untagged
@@ -557,7 +557,7 @@ MonoBehaviour:
   startingModel: 1
   playAreaDimensions: 2
   sculptureDimensions: 0.3
-  toolRadius: 0.05
+  toolRadiusInBlocks: 4
 --- !u!4 &799841781
 Transform:
   m_ObjectHideFlags: 0
@@ -570,7 +570,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &799841782
 MonoBehaviour:
@@ -590,7 +590,19 @@ MonoBehaviour:
     pressType: 2
     OnActive:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 2005488414}
+          m_TargetAssemblyTypeName: HandToolController, Assembly-CSharp
+          m_MethodName: Add
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &799841783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,136 +621,19 @@ MonoBehaviour:
     pressType: 2
     OnActive:
       m_PersistentCalls:
-        m_Calls: []
---- !u!1001 &1108080915
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5303126229760728154, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_InteractionManager
-      value: 
-      objectReference: {fileID: 299938604}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.675
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.2526469
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3.308
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728155, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728156, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_Name
-      value: Block Part - Template
-      objectReference: {fileID: 0}
-    - target: {fileID: 5303126229760728156, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5303126229760728153, guid: 943173a0df32d8d46ac9a8a0ceb429ba, type: 3}
-    - {fileID: 5303126229760728154, guid: 943173a0df32d8d46ac9a8a0ceb429ba, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: 943173a0df32d8d46ac9a8a0ceb429ba, type: 3}
---- !u!1 &1108080916 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5303126229760728156, guid: 943173a0df32d8d46ac9a8a0ceb429ba,
-    type: 3}
-  m_PrefabInstance: {fileID: 1108080915}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1108080917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1108080916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 299938604}
-  m_Colliders: []
-  m_InteractionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_OnFirstHoverEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverExit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnLastHoverExit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectExit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnActivate:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnDeactivate:
-    m_PersistentCalls:
-      m_Calls: []
-  m_CustomReticle: {fileID: 0}
+        m_Calls:
+        - m_Target: {fileID: 2102874068}
+          m_TargetAssemblyTypeName: HandToolController, Assembly-CSharp
+          m_MethodName: Carve
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1135399644
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,7 +739,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1135399649
 MonoBehaviour:
@@ -1059,7 +954,7 @@ Transform:
   m_Children:
   - {fileID: 586500250}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1356086065
 MonoBehaviour:
@@ -1287,7 +1182,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2005488408
 GameObject:

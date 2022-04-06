@@ -33,8 +33,6 @@ public class HandHapticController : MonoBehaviour
     private bool controllerIsEntering = false;
     private bool controllerIsLeaving = false;
     private XRDirectInteractor interactor = null;
-    private GameObject blockManager = null;
-    // private GameObject[] blocks = null;
     // Values for the hand's distance to the nearest block are initialized to high values, beyond the range
     // of the Unity scene, to help recognize errors when they occur.
     private float currentDistance;
@@ -66,9 +64,6 @@ public class HandHapticController : MonoBehaviour
         } else {
             Debug.LogError("Device " + side + " could not be found.");
         }
-
-        // LOCATE THE BLOCK MANAGER.
-        blockManager = GameObject.Find("Block Manager");
     }
 
     void Update()
@@ -77,6 +72,7 @@ public class HandHapticController : MonoBehaviour
         // This is done by calculating the distance from every block and saving the lowest value.
         // Calculate the distance between the each game object with an enabled mesh
         // renderer, storing the smallest value as it goes along.
+        /*
         int enabledBlockCount = 0;
         currentDistance = 9999F;
         shortestDistance = 9999F;
@@ -93,10 +89,7 @@ public class HandHapticController : MonoBehaviour
                 }
             }
         }
-        // Debug.Log("Closest Block Position = " + closestBlock.position);
-        // Debug.Log(side + "Hand Position = " + this.transform.position);
-        // Debug.Log("Enabled block count = " + enabledBlockCount);
-        // Debug.Log("Shortest distance for " + side + " hand = " + shortestDistance);
+        
 
         // COMPARE BLOCK COUNTS BETWEEN FRAMES.
         // Using these comparisons prevents a ton of unneccesary 'SendHapticImpulse' and
@@ -145,6 +138,7 @@ public class HandHapticController : MonoBehaviour
         else {
             controllerState = ControllerState.FarOutside;
         }
+        */
     }
 
     public void IncreaseBlockCount() {
@@ -175,13 +169,6 @@ public class HandHapticController : MonoBehaviour
         // Send a short haptic pulse, slightly stronger than those used to find the scuplture.
         controller.SendHapticImpulse(0u, 0.3f, 0.1f);
 
-    }
-
-    public void GenerateSculpture() {
-        // In order to generate the sculpture using a button press, this wrapper
-        // method is used to obtain the controller's current position.
-        Vector3 currentPosition = transform.position;
-        blockManager.GetComponent<BlockManager>().GenerateSculpture(currentPosition);
     }
 
     private void BeginHaptics() {
