@@ -19,13 +19,13 @@ public class VoxelManager : MonoBehaviour
     // PUBLIC VARIABLES.
     // Public sculpture parameters.
     public Material material;
-    public MARCHING_MODE mode = MARCHING_MODE.CUBES;
+    public MARCHING_MODE mode;
     public STARTING_MODEL startingModel = STARTING_MODEL.CUBE;
     // Dimension variables.
     public float playAreaDimensions = 2.0f;
     public float sculptureDimensions = 0.02f;
     public int toolRadiusInBlocks = 4;
-    public int resolution = 80;
+    public int resolutionInVoxels = 80;
 
     // PRIVATE VARIABLES.
     // Dimension variables for mesh generation/adjustment.
@@ -44,8 +44,18 @@ public class VoxelManager : MonoBehaviour
     private List<Vector3> verts = new List<Vector3>();
     private List<int> indices = new List<int>();
 
-    public void Start()
-    {
+    public void Start() {
+        // Upon startup, set the sculpture to a default set of settings.
+        // Currently, this is as follows:
+        //   - Cube sculpture shape
+        //   - 80 voxel resolution in x, y, and z dimensions
+        //   - Cube-based voxel marching
+        // In the future, these could be stored and adjusted in a constants file, but for now
+        // they are simply set and stored locally within this file.
+        mode = MARCHING_MODE.CUBES;
+        startingModel = STARTING_MODEL.CUBE;
+        resolutionInVoxels = 80;
+
         // Generate the mesh stored within this manager.
         mesh = new Mesh();
 
@@ -65,22 +75,34 @@ public class VoxelManager : MonoBehaviour
         marching.Surface = 0.5f;
 
         // The size of the voxel array.
-        // For simplicity atm, this is set to the same value for each dimension when populating space.
-        // int width = 200;
-        // int height = 200;
-        // int length = 200;
-        width = resolution;
-        height = resolution;
-        length = resolution;
+        // For simplicity, this is set to the same value for each dimension when populating space.
+        width = resolutionInVoxels;
+        height = resolutionInVoxels;
+        length = resolutionInVoxels;
 
         // Calculate the size of a voxel block's dimensions.
-        blockSideLength = playAreaDimensions / resolution;
+        blockSideLength = playAreaDimensions / resolutionInVoxels;
 
         // Calculate scale and height offsets to match the vertices created to the play area.
         // For now, the play area is assumed to be a 2m x 2m x 2m cube, centered on the playmat.
-        scale = playAreaDimensions / resolution;
+        scale = playAreaDimensions / resolutionInVoxels;
         heightOffset = playAreaDimensions / 2;
 
+        // Once all settings have been generated, create the sculpture for the first time to begin the scene.
+        GenerateSculpture();
+    }
+
+    public void RegenerateSculpture() {
+        // Remove the old sculpture from the scene.
+        GameObject.Destroy(meshObject);
+        mesh = new Mesh();
+
+        // Generate a new sculpture, using the current settings.
+        GenerateSculpture();
+    }
+
+    private void GenerateSculpture()
+    {
         voxels = new float[width * height * length];
 
         // Fill voxels with values.
@@ -153,7 +175,7 @@ public class VoxelManager : MonoBehaviour
         meshObject.GetComponent<Rigidbody>().useGravity = false;
         meshObject.GetComponent<Rigidbody>().isKinematic = true;
 
-        // If this is the first time generating the sculpture, show that is has been.
+        // If this is the first time generating the sculpture, mark that the sculpture has been generated before.
         if (!sculptureGenerated) {
             sculptureGenerated = true;
         }

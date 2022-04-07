@@ -12,7 +12,6 @@ public class SerialMessagesScript : MonoBehaviour
 {
     // PUBLIC GAMEOBJECTS.
     public SerialController serialController;
-    public BlockManager blockManager;
     public HandHapticController controller;
     // Script defaults to left controller.
     public ControllerSide controllerSide = ControllerSide.Left;
@@ -37,19 +36,8 @@ public class SerialMessagesScript : MonoBehaviour
     private int count = 0;
     // public bool sendMessages = false;
 
-    void Start() {
-        // Initialize the serial controller.
-        serialController = GameObject.Find(controllerSide + "SerialController").GetComponent<SerialController>();
-        if (serialController == null) {
-            Debug.LogError("Serial Controller Not Found");
-        }
-
-        // BEGIN CONTROLLER INITIALIZATION.
-        // Before the program is run, the serial connection needs to initialize a number of values
-        // for each controller - communicated to and from the Arduino code.
-        // In order to prevent blocking issues, both controllers will have their initializations run
-        // as a part of coroutines, using keyboard inputs to help with moving through the steps.
-        // StartCoroutine(Initaliztion());
+    void Start()
+    {
 
     }
     
@@ -78,7 +66,7 @@ public class SerialMessagesScript : MonoBehaviour
         string hapticString;
         BuildHapticMessage(controller, thumbState, indexState, middleState, out hapticString);
         
-        if (count == 0) {
+        if (count == 1) {
             // Send the completed haptic messages to the necessary serial port for parsing.
             serialController.SendSerialMessage(hapticString);
             // Debug.Log("Sending Serial Message: " + hapticString);
