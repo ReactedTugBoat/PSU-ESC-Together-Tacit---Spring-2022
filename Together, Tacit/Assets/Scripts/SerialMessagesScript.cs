@@ -17,31 +17,31 @@ public class SerialMessagesScript : MonoBehaviour
     public ControllerSide controllerSide = ControllerSide.Left;
     // PRIVATE VARIABLES.
     // Current finger flex values.
-    private float thumbFlex;
-    private float indexFlex;
-    private float middleFlex;
+    [SerializeField] private float thumbFlex;
+    [SerializeField] private float indexFlex;
+    [SerializeField] private float middleFlex;
     // Max values for each finger's flex.
     private float maxThumbFlex;
     private float maxIndexFlex;
     private float maxMiddleFlex;
+    [SerializeField] private bool areMaxFlexValuesSet;
     // Min values for each finger's flex.
     private float minThumbFlex;
     private float minIndexFlex;
     private float minMiddleFlex;
+    [SerializeField] private bool areMinFlexValuesSet;
     // Current finger states (inside, outside, etc...)
     [SerializeField] private ControllerState thumbState;
     [SerializeField] private ControllerState indexState;
     [SerializeField] private ControllerState middleState;
+    // Finger rotation scripts.
+    public FingerRotation thumbRotation;
+    public FingerRotation indexRotation;
+    public FingerRotation middleRotation;
 
     private int count = 0;
-    // public bool sendMessages = false;
-
-    void Start()
-    {
-
-    }
     
-   void Update() {
+    void Update() {
         // SENDING MESSAGES.
         // Every frame, send a message containing data for each finger.
         // The data is sent as a string in the following format...
@@ -57,11 +57,6 @@ public class SerialMessagesScript : MonoBehaviour
         //      s000 -> Sculpt/Tooling
         // 3) The code for each finger is comma-separated, in the order: Thumb, Index, Middle.
         //
-        // To start, gather the states of each finger at the current frame.
-        // Todo: Calibrate finger states and store them. For now, these values are simply hard coded.
-        thumbState = controller.controllerState;
-        indexState = controller.controllerState;
-        middleState = controller.controllerState;
         // Once calculated, use the finger states to generate haptic strings for both fingers.
         string hapticString;
         BuildHapticMessage(controller, thumbState, indexState, middleState, out hapticString);
@@ -75,6 +70,14 @@ public class SerialMessagesScript : MonoBehaviour
         }
 
         count++;
+
+        // If a max and min flex value have been set, map the current flex sensor values to a range
+        // between 0 and 40 degrees, then set the finger's rotation to that value.
+        if (areMaxFlexValuesSet && areMinFlexValuesSet) {
+            thumbRotation.SetFingerFlexValue(map(thumbFlex, minThumbFlex, maxThumbFlex, 0, 40));
+            indexRotation.SetFingerFlexValue(map(indexFlex, minIndexFlex, maxIndexFlex, 0, 40));
+            middleRotation.SetFingerFlexValue(map(middleFlex, minMiddleFlex, maxMiddleFlex, 0, 40));
+        }
     }
 
     // Whenever a message arrives from the Adruino (Ideally, once a frame, though actual timings may vary),
@@ -137,35 +140,10 @@ public class SerialMessagesScript : MonoBehaviour
             hapticString += ",";
 
             // If the current finger is far outside, send a zeroed haptic message (i.e. no haptics).
-            if (state == ControllerState.FarOutside) {
+            if (state == ControllerState.Outside) {
                 // hapticString += "o000";
                 hapticString = "h";
                 return;
-            }
-            // If the current finger is outside, send a haptic message according to current distance from blocks.
-            else if (state == ControllerState.Outside) {
-                // Adjust the current distance to be an integer value between 0 and 255
-                float adjustedBlockDistance = controller.shortestDistance;
-                float maxDistance = 0.4f;
-                if (adjustedBlockDistance < 0) {
-                    adjustedBlockDistance = 0;
-                }
-                if (adjustedBlockDistance > maxDistance) {
-                    adjustedBlockDistance = maxDistance;
-                }
-                int outsideMag = (int)Math.Floor((double)(255 * (maxDistance - adjustedBlockDistance) / adjustedBlockDistance));
-
-                // Add any leading zeros needed to the frequency value (must be three digits long).
-                string leadingZeros = "";
-                int numLength = outsideMag.ToString().Length;
-                if (numLength == 1) {
-                    leadingZeros = "00";
-                } else if (numLength == 2) {
-                    leadingZeros = "0";
-                }
-
-                // Add all calculated parts to the haptic string.
-                hapticString += String.Format("o{0}{1}", leadingZeros, outsideMag);
             }
             // If current finger is inside, snd a haptic message according to the hand's current velocity.
             // TODO: Incorperate velocity. Currently, it just sets the haptics to a set value (100).
@@ -210,4 +188,34 @@ public class SerialMessagesScript : MonoBehaviour
 
     }
 
+    public void SetFingerStates(ControllerState thumb, ControllerState index, ControllerState middle)
+    {
+        // Public method to update the states of each finger on a given hand.
+        thumbState = thumb;
+        indexState = index;
+        middleState = middle;
+    }
+
+    public void SetMaxFlexValues()
+    {
+        // When called, stores the current flex values as the maximum flex sensor values.
+        maxThumbFlex = thumbFlex;
+        maxIndexFlex = indexFlex;
+        maxMiddleFlex = middleFlex;
+        areMaxFlexValuesSet = true;
+    }
+
+    public void SetMinFlexValues()
+    {
+        // When called, stores the current flex values as the maximum flex sensor values.
+        minThumbFlex = thumbFlex;
+        minIndexFlex = indexFlex;
+        minMiddleFlex = middleFlex;
+        areMinFlexValuesSet = true;
+    }
+
+    float map(float s, float a1, float a2, float b1, float b2)
+    {
+        return b1 + (s-a1)*(b2-b1)/(a2-a1);
+    }
 }

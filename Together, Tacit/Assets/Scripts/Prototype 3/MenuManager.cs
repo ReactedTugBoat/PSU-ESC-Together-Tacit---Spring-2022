@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    public MenuPanel currentPanel = null;
+    public ControllerTypeManager leftControllerManager;
+    public ControllerTypeManager rightControllerManager;
+    public VoxelManager voxelManager;
+    private MenuPanel currentPanel = null;
     private MenuPanel mainMenuPanel = null;
+    private MenuPanel optionsPanel = null;
+    private MenuPanel leftCalibratePanel = null;
+    private MenuPanel rightCalibratePanel = null;
     private Canvas canvas = null;
     private bool menuIsOpen;
 
@@ -29,9 +35,12 @@ public class MenuManager : MonoBehaviour
             panel.Setup(this);
         }
 
-        // Store the first panel found to be the default options when opening the menu.
-        // This will always be the first canvas in the heirarchy.
+        // Store the panels found.
+        // The main menu will always be the first canvas in the heirarchy.
         mainMenuPanel = menuPanels[0];
+        optionsPanel = menuPanels[1];
+        leftCalibratePanel = menuPanels[2];
+        rightCalibratePanel = menuPanels[3];
 
         // Save the panel locally to toggle visibility later.
         canvas = GetComponent<Canvas>();
@@ -50,12 +59,55 @@ public class MenuManager : MonoBehaviour
             // If it is already open, change the menu visiblity to hidden.
             Hide();
 
+            // Disable the selection rays for both controllers.
+            leftControllerManager.DisableMenuRay();
+            rightControllerManager.DisableMenuRay();
+
+            // If the sculpture is hidden, set it to visible again.
+            voxelManager.ShowSculpture();
+
         } else {
             // Otherwise, if the menu is closed, set the current panel to the main menu.
             SetCurrent(mainMenuPanel);
 
             // Set the menu to visible.
             Show();
+
+            // Enable the selection rays for both controllers.
+            leftControllerManager.EnableMenuRay();
+            rightControllerManager.EnableMenuRay();
+
+            // Hide the sculpture temporarily and disable any interactions with it.
+            voxelManager.HideSculpture();
+        }
+    }
+
+    // MENU BUTTON FUNCTIONS.
+
+    public void RegenSculptureFromMenu()
+    {
+        // Toggle the menu's visiblilty.
+        ToggleMenuOpen();
+
+        // Regererate the sculpture.
+        voxelManager.RegenerateSculpture();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void OpenCalibrationMenus() {
+        // When called, opens calibration menus equivalent to which controllers (left or right) are
+        // currently set to be controlled as haptic gloves.
+        currentPanel.Hide();
+
+        if (leftControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
+            leftCalibratePanel.Show();
+        }
+        if (rightControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
+            rightCalibratePanel.Show();
         }
     }
 

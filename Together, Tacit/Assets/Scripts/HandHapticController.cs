@@ -10,15 +10,6 @@ public enum ControllerType {
     Right
 }
 
-public enum ControllerState {
-    FarOutside,
-    Outside,
-    Inside,
-    Entering,
-    Leaving,
-    Tooling
-}
-
 // Public class to store the haptic behavior of the VR hands. Designed as a general script, which
 // can be adjusted to fit either hand as needed.
 public class HandHapticController : MonoBehaviour

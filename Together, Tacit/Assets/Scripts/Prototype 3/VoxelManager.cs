@@ -93,59 +93,18 @@ public class VoxelManager : MonoBehaviour
     }
 
     public void RegenerateSculpture() {
-        // Remove the old sculpture from the scene.
-        GameObject.Destroy(meshObject);
-        mesh = new Mesh();
+        // Restore the voxel array to the current sculpture shape.
+        PopulateVoxels();
 
-        // Generate a new sculpture, using the current settings.
-        GenerateSculpture();
+        // Update the sculpture with the new voxel values.
+        UpdateMeshes();
     }
 
     private void GenerateSculpture()
     {
+        // Fill the voxel array with a starting sculpture.
         voxels = new float[width * height * length];
-
-        // Fill voxels with values.
-        // The starting model can either be a cube or a sphere, depending on user preference.
-        // Value defaults to a cube. The loops go through each voxel's (x,y,z) global
-        // position in space for these calculations.
-        int drawnVoxels = 0;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int z = 0; z < length; z++) {
-                    
-                    // Calculate the global x,y,z positions using the unadjusted values.
-                    float xAdj = (x * scale) - (width * scale / 2);
-                    float yAdj = (y * scale) - (height * scale / 2) + heightOffset;
-                    float zAdj = (z * scale) - (length * scale / 2);
-
-                    int idx = x + y * width + z * width * height;
-
-                    // Choose which voxels are in/out based on the chosen generation mode.
-                    if (startingModel == STARTING_MODEL.CUBE) {
-                        // Check to see if a given voxel is within the chosen dimensions from 0.
-                        bool voxelAboveWidthMin = (xAdj > -(sculptureDimensions / 2));
-                        bool voxelBelowWidthMax = (xAdj < (sculptureDimensions / 2));
-                        bool voxelAboveHeightMin = (yAdj > -(sculptureDimensions / 2) + heightOffset);
-                        bool voxelBelowHeightMax = (yAdj < (sculptureDimensions / 2) + heightOffset);
-                        bool voxelAboveLengthMin = (zAdj > -(sculptureDimensions / 2));
-                        bool voxelBelowLengthMax = (zAdj < (sculptureDimensions / 2));
-
-                        // If a voxel fulfulls all requirements to be inside, set it to 1.
-                        if (voxelAboveWidthMin && voxelBelowWidthMax && voxelAboveHeightMin && voxelBelowHeightMax && voxelAboveLengthMin && voxelBelowLengthMax) {
-                            voxels[idx] = 1f;
-                            drawnVoxels++;
-                        }
-                    } else {
-                        // Check to see if the adjusted x,y,z values are within a sphere's radius.
-                        if (Vector3.Distance(new Vector3(xAdj, yAdj, zAdj), new Vector3(0f, heightOffset, 0f)) < (sculptureDimensions / 2)) {
-                            voxels[idx] = 1f;
-                            drawnVoxels++;
-                        }
-                    }
-                }
-            }
-        }
+        PopulateVoxels();
 
         //The mesh produced is not optimal. There is one vert for each index.
         //Would need to weld vertices for better quality mesh.
@@ -277,6 +236,74 @@ public class VoxelManager : MonoBehaviour
             // If any voxels were changed, update the meshes to match the new values.
             if (voxelsToChange.Count > 0) {
                 UpdateMeshes();
+            }
+        }
+    }
+
+    public void HideSculpture()
+    {
+        // Toggle the visibility of the mesh gameobject.
+        meshObject.SetActive(false);
+
+        // Disable the input managers for interactions with the sculpture while it is hidden.
+        foreach (XRInput inputManager in GetComponents<XRInput>()) {
+            inputManager.enabled = false;
+        }
+    }
+
+    public void ShowSculpture()
+    {
+        // Toggle the visibility of the mesh gameobject.
+        meshObject.SetActive(true);
+
+        // Enable the input managers for interactions with the sculpture while it is visible.
+        foreach (XRInput inputManager in GetComponents<XRInput>()) {
+            inputManager.enabled = true;
+        }
+    }
+
+    private void PopulateVoxels()
+    {
+        // Fill voxels with default starting values.
+        // The starting model can either be a cube or a sphere, depending on user preference.
+        // Value defaults to a cube. The loops go through each voxel's (x,y,z) global
+        // position in space for these calculations.
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < length; z++) {
+                    
+                    // Calculate the global x,y,z positions using the unadjusted values.
+                    float xAdj = (x * scale) - (width * scale / 2);
+                    float yAdj = (y * scale) - (height * scale / 2) + heightOffset;
+                    float zAdj = (z * scale) - (length * scale / 2);
+
+                    int idx = x + y * width + z * width * height;
+
+                    // Choose which voxels are in/out based on the chosen generation mode.
+                    if (startingModel == STARTING_MODEL.CUBE) {
+                        // Check to see if a given voxel is within the chosen dimensions from 0.
+                        bool voxelAboveWidthMin = (xAdj > -(sculptureDimensions / 2));
+                        bool voxelBelowWidthMax = (xAdj < (sculptureDimensions / 2));
+                        bool voxelAboveHeightMin = (yAdj > -(sculptureDimensions / 2) + heightOffset);
+                        bool voxelBelowHeightMax = (yAdj < (sculptureDimensions / 2) + heightOffset);
+                        bool voxelAboveLengthMin = (zAdj > -(sculptureDimensions / 2));
+                        bool voxelBelowLengthMax = (zAdj < (sculptureDimensions / 2));
+
+                        // If a voxel fulfulls all requirements to be inside, set it to 1.
+                        if (voxelAboveWidthMin && voxelBelowWidthMax && voxelAboveHeightMin && voxelBelowHeightMax && voxelAboveLengthMin && voxelBelowLengthMax) {
+                            voxels[idx] = 1f;
+                        } else {
+                            voxels[idx] = 0f;
+                        }
+                    } else {
+                        // Check to see if the adjusted x,y,z values are within a sphere's radius.
+                        if (Vector3.Distance(new Vector3(xAdj, yAdj, zAdj), new Vector3(0f, heightOffset, 0f)) < (sculptureDimensions / 2)) {
+                            voxels[idx] = 1f;
+                        } else {
+                            voxels[idx] = 0f;
+                        }
+                    }
+                }
             }
         }
     }

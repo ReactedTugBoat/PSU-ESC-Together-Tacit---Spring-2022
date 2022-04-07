@@ -12,7 +12,6 @@ public class ButtonInteractions : MonoBehaviour
     {
         // When called, attempts to start a click event for a button, if found by the raycaster.
         if (IsLineRendHittingButton()) {
-            Debug.Log("Click evoked");
             foundButton.onClick.Invoke();
         }
     }
