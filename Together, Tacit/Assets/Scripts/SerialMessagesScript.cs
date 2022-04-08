@@ -175,7 +175,7 @@ public class SerialMessagesScript : MonoBehaviour
             // If current finger is inside, snd a haptic message according to the hand's current velocity.
             // TODO: Incorperate velocity. Currently, it just sets the haptics to a set value (100).
             else if (state == ControllerState.Inside) {
-                hapticString += "i200";
+                hapticString += "i255";
             }
             // If current finger is entering, exiting, or tooling, send a haptic message accordingly.
             else if (state == ControllerState.Entering) {
