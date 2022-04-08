@@ -34,14 +34,32 @@ public class SerialMessagesScript : MonoBehaviour
     [SerializeField] private ControllerState thumbState;
     [SerializeField] private ControllerState indexState;
     [SerializeField] private ControllerState middleState;
-    // Finger rotation scripts.
+    // Finger rotation and collision scripts.
     public FingerRotation thumbRotation;
     public FingerRotation indexRotation;
     public FingerRotation middleRotation;
+    public SculptureCollisionBox thumbCollision;
+    public SculptureCollisionBox indexCollision;
+    public SculptureCollisionBox middleCollision;
 
-    private int count = 0;
+    private int frameCounter;
+
+    void Start()
+    {
+        // Stagger the frame counters between the left and right hands.
+        if (controllerSide == ControllerSide.Left) {
+            frameCounter = 0;
+        } else {
+            frameCounter = 1;
+        }
+    }
     
     void Update() {
+        // Update finger states based on current collision states.
+        thumbState = thumbCollision.collisionState;
+        indexState = indexCollision.collisionState;
+        middleState = middleCollision.collisionState;
+
         // SENDING MESSAGES.
         // Every frame, send a message containing data for each finger.
         // The data is sent as a string in the following format...
@@ -61,16 +79,6 @@ public class SerialMessagesScript : MonoBehaviour
         string hapticString;
         BuildHapticMessage(controller, thumbState, indexState, middleState, out hapticString);
         
-        if (count == 1) {
-            // Send the completed haptic messages to the necessary serial port for parsing.
-            serialController.SendSerialMessage(hapticString);
-            // Debug.Log("Sending Serial Message: " + hapticString);
-            count = 0;
-            return;
-        }
-
-        count++;
-
         // If a max and min flex value have been set, map the current flex sensor values to a range
         // between 0 and 40 degrees, then set the finger's rotation to that value.
         if (areMaxFlexValuesSet && areMinFlexValuesSet) {
@@ -78,6 +86,17 @@ public class SerialMessagesScript : MonoBehaviour
             indexRotation.SetFingerFlexValue(map(indexFlex, minIndexFlex, maxIndexFlex, 0, 40));
             middleRotation.SetFingerFlexValue(map(middleFlex, minMiddleFlex, maxMiddleFlex, 0, 40));
         }
+
+        if (frameCounter == 2) {
+            // Send the completed haptic messages to the necessary serial port for parsing.
+            serialController.SendSerialMessage(hapticString);
+            // Debug.Log("Sending Serial Message: " + hapticString + " from " + controllerSide + " side");
+            frameCounter = 0;
+            return;
+        }
+
+        frameCounter++;
+
     }
 
     // Whenever a message arrives from the Adruino (Ideally, once a frame, though actual timings may vary),
@@ -100,7 +119,7 @@ public class SerialMessagesScript : MonoBehaviour
             string[] splitMsg = msg.Split(',');
             if (splitMsg.Length != 4) {
                 // If a recieved message is incorrectly parsed, log an error and return.
-                Debug.LogError("Recieved message was not of expected length: expected = 4, actual = " + splitMsg.Length);
+                // Debug.LogError("Recieved message was not of expected length: expected = 4, actual = " + splitMsg.Length);
                 return;
             }
 
@@ -141,9 +160,7 @@ public class SerialMessagesScript : MonoBehaviour
 
             // If the current finger is far outside, send a zeroed haptic message (i.e. no haptics).
             if (state == ControllerState.Outside) {
-                // hapticString += "o000";
-                hapticString = "h";
-                return;
+                hapticString += "h";
             }
             // If current finger is inside, snd a haptic message according to the hand's current velocity.
             // TODO: Incorperate velocity. Currently, it just sets the haptics to a set value (100).
@@ -167,24 +184,6 @@ public class SerialMessagesScript : MonoBehaviour
             }
 
         }
-
-    }
-
-    // Private method to initialize the rotation of the controllers and the max/min value of each flex sensor.
-    // Utilizes a coroutine to block for button inputs.
-    IEnumerator Initaliztion() {
-        Debug.Log(controllerSide + " Initalization!\n" + "Calibrating " + controllerSide + " controller, press A to continue");
-
-        // Wait for a keyboard press.
-        while(!Input.GetKeyDown(KeyCode.A)) {
-            yield return null;
-        }
-
-        // Set the rotation of the hand model to the current rotation of the controller.
-        GameObject hand = GameObject.Find(controllerSide + "Hand Controller");
-        hand.GetComponentInChildren<Transform>().transform.rotation = hand.transform.rotation;
-
-        Debug.Log(controllerSide + " Rotation Set!");
 
     }
 

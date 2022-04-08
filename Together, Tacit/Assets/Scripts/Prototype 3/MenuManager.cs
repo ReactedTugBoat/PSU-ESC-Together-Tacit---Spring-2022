@@ -103,13 +103,25 @@ public class MenuManager : MonoBehaviour
         // currently set to be controlled as haptic gloves.
         currentPanel.Hide();
 
-        if (leftControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
-            leftCalibratePanel.Show();
-        }
-        if (rightControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
-            rightCalibratePanel.Show();
-        }
+        // Once swapped to the calibration menu, enable the controls of the needed controller panels.
+        // if (leftControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
+        //     leftCalibratePanel.Show();
+        //     Debug.Log("Left show");
+        // } else {
+        //     leftCalibratePanel.Hide();
+        // }
+
+        // if (rightControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
+        //     rightCalibratePanel.Show();
+        //     Debug.Log("Right show");
+        // } else {
+        //     rightCalibratePanel.Show();
+        // }
+        leftCalibratePanel.Show();
+        rightCalibratePanel.Show();
     }
+
+    // HELPER FUNCTIONS.
 
     public void SetCurrent(MenuPanel newPanel)
     {

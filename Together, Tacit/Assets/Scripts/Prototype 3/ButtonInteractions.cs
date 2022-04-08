@@ -12,7 +12,9 @@ public class ButtonInteractions : MonoBehaviour
     {
         // When called, attempts to start a click event for a button, if found by the raycaster.
         if (IsLineRendHittingButton()) {
-            foundButton.onClick.Invoke();
+            if (foundButton != null) {
+                foundButton.onClick.Invoke();
+            }
         }
     }
 

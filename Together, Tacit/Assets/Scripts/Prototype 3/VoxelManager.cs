@@ -220,6 +220,14 @@ public class VoxelManager : MonoBehaviour
                         int y = Mathf.FloorToInt(adjustedPosition.y + j);
                         int z = Mathf.FloorToInt(adjustedPosition.z + k);
 
+                        // If any of the dimensions are outside the bounds of the play area, pass over it.
+                        bool isXOutOfBounds = (x < 0 || x > resolutionInVoxels);
+                        bool isYOutOfBounds = (y < 0 || y > resolutionInVoxels);
+                        bool isZOutOfBounds = (z < 0 || z > resolutionInVoxels);
+                        if (isXOutOfBounds || isYOutOfBounds || isZOutOfBounds) {
+                            continue;
+                        }
+
                         // If the position of the voxel is within the tool, mark it to be changed.
                         if (Vector3.Distance(adjustedPosition, new Vector3(x, y, z)) < toolRadiusInBlocks) {
                             voxelsToChange.Add(x + y * width + z * width * height);

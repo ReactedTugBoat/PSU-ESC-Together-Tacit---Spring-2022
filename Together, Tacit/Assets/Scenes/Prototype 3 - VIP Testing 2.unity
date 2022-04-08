@@ -1148,10 +1148,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4022bd5be77301478a68fcdce90dfb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serialController: {fileID: 741881165}
   oculusQuestController: {fileID: 243764841}
   gloveHandModel: {fileID: 1927577475}
   menuSelectionRay: {fileID: 70917987}
   currentController: 0
+  initialLocalEulerAngles: {x: 0, y: 0, z: 0}
 --- !u!135 &253098032
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1392,7 +1394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 128384, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
       propertyPath: m_RootOrder
@@ -2108,7 +2110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
       propertyPath: portName
-      value: \\.\COM11
+      value: \\.\COM13
       objectReference: {fileID: 0}
     - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
       propertyPath: messageListener
@@ -2567,10 +2569,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4022bd5be77301478a68fcdce90dfb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serialController: {fileID: 957041415}
   oculusQuestController: {fileID: 1061801181}
   gloveHandModel: {fileID: 734830302}
   menuSelectionRay: {fileID: 1041006300}
-  currentController: 0
+  currentController: 1
+  initialLocalEulerAngles: {x: 0, y: 0, z: 0}
 --- !u!135 &543510768
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3503,7 +3507,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 720824926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 741881166}
+        m_TargetAssemblyTypeName: SerialMessagesScript, Assembly-CSharp
+        m_MethodName: SetMinFlexValues
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &720824926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3575,12 +3591,20 @@ MonoBehaviour:
   serialController: {fileID: 741881167}
   controller: {fileID: 0}
   controllerSide: 0
+  thumbFlex: 0
+  indexFlex: 0
+  middleFlex: 0
+  areMaxFlexValuesSet: 0
+  areMinFlexValuesSet: 0
   thumbState: 0
   indexState: 0
   middleState: 0
   thumbRotation: {fileID: 587769347}
   indexRotation: {fileID: 245323811}
   middleRotation: {fileID: 813035487}
+  thumbCollision: {fileID: 477357675}
+  indexCollision: {fileID: 1485544699}
+  middleCollision: {fileID: 1639794805}
 --- !u!114 &741881167 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4,
@@ -4055,7 +4079,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 867636616}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4581,7 +4605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -98.2, y: 224.1}
+  m_AnchoredPosition: {x: 99.3, y: 224.1}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &926897661
@@ -4647,12 +4671,20 @@ MonoBehaviour:
   serialController: {fileID: 957041417}
   controller: {fileID: 0}
   controllerSide: 1
+  thumbFlex: 0
+  indexFlex: 0
+  middleFlex: 0
+  areMaxFlexValuesSet: 0
+  areMinFlexValuesSet: 0
   thumbState: 0
   indexState: 0
   middleState: 0
   thumbRotation: {fileID: 1813932908}
   indexRotation: {fileID: 1614258402}
   middleRotation: {fileID: 752991216}
+  thumbCollision: {fileID: 1782441387}
+  indexCollision: {fileID: 903097432}
+  middleCollision: {fileID: 527966818}
 --- !u!114 &957041417 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4,
@@ -5582,7 +5614,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1078297347}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 741881166}
+        m_TargetAssemblyTypeName: SerialMessagesScript, Assembly-CSharp
+        m_MethodName: SetMaxFlexValues
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1078297347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5784,7 +5828,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -99.1, y: 137.31}
+  m_AnchoredPosition: {x: 98.39999, y: 137.31}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!65 &1105247942
@@ -8515,7 +8559,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1741236431}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -8528,7 +8572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 192.3, y: 0}
+  m_AnchoredPosition: {x: -1, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1741236433
@@ -9189,7 +9233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -99.1, y: 183.1}
+  m_AnchoredPosition: {x: 98.39999, y: 183.1}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!65 &1917401964
@@ -9336,7 +9380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -99.1, y: 90.31}
+  m_AnchoredPosition: {x: 98.39999, y: 90.31}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!65 &2015425226
