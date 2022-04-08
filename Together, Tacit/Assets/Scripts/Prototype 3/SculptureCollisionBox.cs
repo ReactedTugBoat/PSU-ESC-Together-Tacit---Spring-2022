@@ -40,11 +40,6 @@ public class SculptureCollisionBox : MonoBehaviour
         else if (!isCollidingWithSculpture && prevCollidingWithSculpture) {
             collisionState = ControllerState.Leaving;
         }
-        // If both current and prev were colliding, set state to inside.
-        else if (isCollidingWithSculpture && prevCollidingWithSculpture) {
-            
-            collisionState = ControllerState.Inside;
-        }
         // Otherwise, perform additional calculations to determine inside/outside position.
         else {
             // During development, some issues were found with these collision boxes passing fully within
@@ -54,14 +49,17 @@ public class SculptureCollisionBox : MonoBehaviour
             // the collider is inside, otherwise, it is outside.
             if (IsInCollider(voxelManager.GetComponentInChildren<MeshCollider>(), transform.position)) {
                 collisionState = ControllerState.Inside;
+                isCollidingWithSculpture = true;
             } else {
                 collisionState = ControllerState.Outside;
+                isCollidingWithSculpture = false;
             }
-
         }
 
         // Store the status of the current collision as the prev collision.
         prevCollidingWithSculpture = isCollidingWithSculpture;
+
+        // Set the 
     }
 
     public void Entering() {

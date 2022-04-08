@@ -32,6 +32,7 @@ public class HandHapticManager : MonoBehaviour
     private InputDeviceCharacteristics controllerCharacteristics;
     private InputDevice oculusController;
     private bool oculusControllerFound;
+    private int pulseFrameCounter;
 
     public void Start()
     {
@@ -86,5 +87,24 @@ public class HandHapticManager : MonoBehaviour
             // gloves are dealt with within this script, and are just passed along from here.
             serialMessagesScript.SetFingerStates(thumb.collisionState, index.collisionState, middle.collisionState);
         }
+
+        if (pulseFrameCounter > 0) {
+            if (pulseFrameCounter % 10 == 1) {
+                oculusController.SendHapticImpulse(0u, 1.0f, 0.3f);
+            } else {
+                oculusController.StopHaptics();
+            }
+            pulseFrameCounter--;
+        }
+    }
+
+    public void SendCarvingHaptics() {
+        // Send a haptic pulse to indicate that the tool is set to carving.
+        pulseFrameCounter = 1;
+    }
+
+    public void SendAddingHaptics() {
+        // Send a haptic pulse to indicate that the tool is set to adding.
+        pulseFrameCounter = 11;
     }
 }

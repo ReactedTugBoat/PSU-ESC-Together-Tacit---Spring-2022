@@ -26,6 +26,9 @@ public class VoxelManager : MonoBehaviour
     public float sculptureDimensions = 0.02f;
     public int toolRadiusInBlocks = 4;
     public int resolutionInVoxels = 80;
+    // Haptic managers.
+    public HandHapticManager leftHaptics;
+    public HandHapticManager rightHaptics;
 
     // PRIVATE VARIABLES.
     // Dimension variables for mesh generation/adjustment.
@@ -43,6 +46,7 @@ public class VoxelManager : MonoBehaviour
     private GameObject meshObject;
     private List<Vector3> verts = new List<Vector3>();
     private List<int> indices = new List<int>();
+    private bool isToolModeCarving;
 
     public void Start() {
         // Upon startup, set the sculpture to a default set of settings.
@@ -90,6 +94,9 @@ public class VoxelManager : MonoBehaviour
 
         // Once all settings have been generated, create the sculpture for the first time to begin the scene.
         GenerateSculpture();
+
+        // Start with the tool mode set to carve from the structure.
+        isToolModeCarving = true;
     }
 
     public void RegenerateSculpture() {
@@ -313,6 +320,28 @@ public class VoxelManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    public void ChangeToolMode()
+    {
+        // Changes the tool mode stored within the manager.
+        if (isToolModeCarving) {
+            isToolModeCarving = false;
+            leftHaptics.SendAddingHaptics();
+            rightHaptics.SendAddingHaptics();
+        } else {
+            isToolModeCarving = true;
+            leftHaptics.SendCarvingHaptics();
+            rightHaptics.SendCarvingHaptics();
+        }
+    }
+
+    public bool IsToolSetToCarving() {
+        if (isToolModeCarving) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

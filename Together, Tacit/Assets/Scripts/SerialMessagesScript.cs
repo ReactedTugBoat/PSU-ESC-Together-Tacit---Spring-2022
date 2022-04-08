@@ -10,26 +10,27 @@ public enum ControllerSide {
 
 public class SerialMessagesScript : MonoBehaviour
 {
-    // PUBLIC GAMEOBJECTS.
+    // PUBLIC GAMEOBJECT SCRIPTS.
     public SerialController serialController;
     public HandHapticController controller;
-    // Script defaults to left controller.
+    public HandToolController toolController;
+    // NOTE: Script defaults to left controller.
     public ControllerSide controllerSide = ControllerSide.Left;
     // PRIVATE VARIABLES.
     // Current finger flex values.
-    [SerializeField] private float thumbFlex;
-    [SerializeField] private float indexFlex;
-    [SerializeField] private float middleFlex;
+    private float thumbFlex;
+    private float indexFlex;
+    private float middleFlex;
     // Max values for each finger's flex.
     private float maxThumbFlex;
     private float maxIndexFlex;
     private float maxMiddleFlex;
-    [SerializeField] private bool areMaxFlexValuesSet;
+    private bool areMaxFlexValuesSet;
     // Min values for each finger's flex.
     private float minThumbFlex;
     private float minIndexFlex;
     private float minMiddleFlex;
-    [SerializeField] private bool areMinFlexValuesSet;
+    private bool areMinFlexValuesSet;
     // Current finger states (inside, outside, etc...)
     [SerializeField] private ControllerState thumbState;
     [SerializeField] private ControllerState indexState;
@@ -59,6 +60,23 @@ public class SerialMessagesScript : MonoBehaviour
         thumbState = thumbCollision.collisionState;
         indexState = indexCollision.collisionState;
         middleState = middleCollision.collisionState;
+        
+        // If a max and min flex value have been set, map the current flex sensor values to a range
+        // between 0 and 40 degrees, then set the finger's rotation to that value.
+        if (areMaxFlexValuesSet && areMinFlexValuesSet) {
+            thumbRotation.SetFingerFlexValue(map(thumbFlex, minThumbFlex, maxThumbFlex, 0, 40));
+            indexRotation.SetFingerFlexValue(map(indexFlex, minIndexFlex, maxIndexFlex, 0, 40));
+            middleRotation.SetFingerFlexValue(map(middleFlex, minMiddleFlex, maxMiddleFlex, 0, 40));
+
+            // Whenever a user brings their fingers together into a fist, call the tooling command for the given hand.
+            float toolRotationThreshold = 36f;
+            bool isThumbFlexed = (thumbRotation.GetFingerFlexValue() > toolRotationThreshold);
+            bool isIndexFlexed = (indexRotation.GetFingerFlexValue() > toolRotationThreshold);
+            bool isMiddleFlexed = (middleRotation.GetFingerFlexValue() > toolRotationThreshold);
+            if (isThumbFlexed && isIndexFlexed && isMiddleFlexed) {
+                toolController.Tooling();
+            }
+        }
 
         // SENDING MESSAGES.
         // Every frame, send a message containing data for each finger.
@@ -78,16 +96,8 @@ public class SerialMessagesScript : MonoBehaviour
         // Once calculated, use the finger states to generate haptic strings for both fingers.
         string hapticString;
         BuildHapticMessage(controller, thumbState, indexState, middleState, out hapticString);
-        
-        // If a max and min flex value have been set, map the current flex sensor values to a range
-        // between 0 and 40 degrees, then set the finger's rotation to that value.
-        if (areMaxFlexValuesSet && areMinFlexValuesSet) {
-            thumbRotation.SetFingerFlexValue(map(thumbFlex, minThumbFlex, maxThumbFlex, 0, 40));
-            indexRotation.SetFingerFlexValue(map(indexFlex, minIndexFlex, maxIndexFlex, 0, 40));
-            middleRotation.SetFingerFlexValue(map(middleFlex, minMiddleFlex, maxMiddleFlex, 0, 40));
-        }
 
-        if (frameCounter == 2) {
+        if (frameCounter == 9) {
             // Send the completed haptic messages to the necessary serial port for parsing.
             serialController.SendSerialMessage(hapticString);
             // Debug.Log("Sending Serial Message: " + hapticString + " from " + controllerSide + " side");
@@ -165,7 +175,7 @@ public class SerialMessagesScript : MonoBehaviour
             // If current finger is inside, snd a haptic message according to the hand's current velocity.
             // TODO: Incorperate velocity. Currently, it just sets the haptics to a set value (100).
             else if (state == ControllerState.Inside) {
-                hapticString += "i255";
+                hapticString += "i200";
             }
             // If current finger is entering, exiting, or tooling, send a haptic message accordingly.
             else if (state == ControllerState.Entering) {

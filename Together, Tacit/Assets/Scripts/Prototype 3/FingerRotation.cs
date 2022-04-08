@@ -12,6 +12,7 @@ public class FingerRotation : MonoBehaviour
     private float initialFinger1Rotation;
     private float initialFinger2Rotation;
     private float initialFinger3Rotation;
+    private float degreeAdjustment;
 
     void Start()
     {
@@ -26,7 +27,6 @@ public class FingerRotation : MonoBehaviour
         // Method to take in flex values from a flex sensor and adjust finger joints.
         // Values coming in must take a value between 0 and 40 degrees. Any values above
         // or below this range need to be cut off to prevent errors.
-        float degreeAdjustment;
         if (fingerFlexInDegrees < 0) {
             degreeAdjustment = 0;
         } else if (fingerFlexInDegrees > 40) {
@@ -53,5 +53,9 @@ public class FingerRotation : MonoBehaviour
             initialFinger3Rotation - degreeAdjustment
         );
     }
-    
+
+    public float GetFingerFlexValue()
+    {
+        return degreeAdjustment;
+    }
 }
