@@ -7,6 +7,7 @@ public class MenuManager : MonoBehaviour
     public ControllerTypeManager leftControllerManager;
     public ControllerTypeManager rightControllerManager;
     public VoxelManager voxelManager;
+    public GameObject backButton;
     private MenuPanel currentPanel = null;
     private MenuPanel mainMenuPanel = null;
     private MenuPanel optionsPanel = null;
@@ -59,6 +60,10 @@ public class MenuManager : MonoBehaviour
             // If it is already open, change the menu visiblity to hidden.
             Hide();
 
+            // To prevent them remaining open, hide both calibration menus.
+            leftCalibratePanel.Hide();
+            rightCalibratePanel.Hide();
+
             // Disable the selection rays for both controllers.
             leftControllerManager.DisableMenuRay();
             rightControllerManager.DisableMenuRay();
@@ -84,6 +89,12 @@ public class MenuManager : MonoBehaviour
 
     // MENU BUTTON FUNCTIONS.
 
+    public void SetMenuToMain()
+    {
+        // Sets the current panel to the main menu.
+        SetCurrent(mainMenuPanel);
+    }
+
     public void RegenSculptureFromMenu()
     {
         // Toggle the menu's visiblilty.
@@ -104,21 +115,25 @@ public class MenuManager : MonoBehaviour
         currentPanel.Hide();
 
         // Once swapped to the calibration menu, enable the controls of the needed controller panels.
-        // if (leftControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
-        //     leftCalibratePanel.Show();
-        //     Debug.Log("Left show");
-        // } else {
-        //     leftCalibratePanel.Hide();
-        // }
+        if (leftControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
+            leftCalibratePanel.Show();
+        } else {
+            leftCalibratePanel.Hide();
+        }
 
-        // if (rightControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
-        //     rightCalibratePanel.Show();
-        //     Debug.Log("Right show");
-        // } else {
-        //     rightCalibratePanel.Show();
-        // }
-        leftCalibratePanel.Show();
-        rightCalibratePanel.Show();
+        if (rightControllerManager.CurrentControllerType() == GameplayControllerType.HAPTIC_GLOVE) {
+            rightCalibratePanel.Show();
+        } else {
+            rightCalibratePanel.Hide();
+        }
+
+        // Set the back button as visible.
+        backButton.SetActive(true);
+    }
+
+    public void OpenOptionsMenu() {
+        // When called, sets the current menu to the options menu.
+        SetCurrent(optionsPanel);
     }
 
     // HELPER FUNCTIONS.
@@ -134,6 +149,13 @@ public class MenuManager : MonoBehaviour
         // Set the new panel as the current panel and make it visible.
         currentPanel = newPanel;
         currentPanel.Show();
+
+        // If the current panel is now the main menu, hide the 'back' button. Otherwise, make it visible.
+        if (currentPanel == mainMenuPanel) {
+            backButton.SetActive(false);
+        } else {
+            backButton.SetActive(true);
+        }
     }
 
     public void Show()

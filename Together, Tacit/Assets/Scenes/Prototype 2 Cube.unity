@@ -444,11 +444,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7448815bd5148434682b3d931066cd10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RigBaseGameObject: {fileID: 803995986}
+  m_Camera: {fileID: 0}
+  m_OriginBaseGameObject: {fileID: 803995986}
   m_CameraFloorOffsetObject: {fileID: 1789912276}
-  m_CameraGameObject: {fileID: 1285881100}
-  m_TrackingSpace: 1
+  m_RequestedTrackingOriginMode: 0
   m_CameraYOffset: 1.36144
+  m_CameraGameObject: {fileID: 1285881100}
 --- !u!4 &803995989
 Transform:
   m_ObjectHideFlags: 0
@@ -528,42 +529,68 @@ MonoBehaviour:
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 4294967295
   m_AttachTransform: {fileID: 0}
+  m_KeepSelectedTargetValid: 1
   m_StartingSelectedInteractable: {fileID: 0}
-  m_OnHoverEnter:
+  m_HoverEntered:
     m_PersistentCalls:
       m_Calls: []
-  m_OnHoverExit:
+  m_HoverExited:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSelectEnter:
+  m_SelectEntered:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSelectExit:
+  m_SelectExited:
     m_PersistentCalls:
       m_Calls: []
-  m_ToggleSelect: 0
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectActionTrigger: 0
   m_HideControllerOnSelect: 0
-  m_PlayAudioClipOnSelectEnter: 0
-  m_AudioClipForOnSelectEnter: {fileID: 0}
-  m_PlayAudioClipOnSelectExit: 0
-  m_AudioClipForOnSelectExit: {fileID: 0}
-  m_PlayAudioClipOnHoverEnter: 0
-  m_AudioClipForOnHoverEnter: {fileID: 0}
-  m_PlayAudioClipOnHoverExit: 0
-  m_AudioClipForOnHoverExit: {fileID: 0}
-  m_PlayHapticsOnSelectEnter: 0
+  m_AllowHoveredActivate: 0
+  m_PlayAudioClipOnSelectEntered: 0
+  m_AudioClipForOnSelectEntered: {fileID: 0}
+  m_PlayAudioClipOnSelectExited: 0
+  m_AudioClipForOnSelectExited: {fileID: 0}
+  m_PlayAudioClipOnSelectCanceled: 0
+  m_AudioClipForOnSelectCanceled: {fileID: 0}
+  m_PlayAudioClipOnHoverEntered: 0
+  m_AudioClipForOnHoverEntered: {fileID: 0}
+  m_PlayAudioClipOnHoverExited: 0
+  m_AudioClipForOnHoverExited: {fileID: 0}
+  m_PlayAudioClipOnHoverCanceled: 0
+  m_AudioClipForOnHoverCanceled: {fileID: 0}
+  m_PlayHapticsOnSelectEntered: 0
   m_HapticSelectEnterIntensity: 0
   m_HapticSelectEnterDuration: 0
-  m_PlayHapticsOnSelectExit: 0
+  m_PlayHapticsOnSelectExited: 0
   m_HapticSelectExitIntensity: 0
   m_HapticSelectExitDuration: 0
-  m_PlayHapticsOnHoverEnter: 0
+  m_PlayHapticsOnSelectCanceled: 0
+  m_HapticSelectCancelIntensity: 0
+  m_HapticSelectCancelDuration: 0
+  m_PlayHapticsOnHoverEntered: 0
   m_HapticHoverEnterIntensity: 0
   m_HapticHoverEnterDuration: 0
-  m_PlayHapticsOnHoverExit: 0
+  m_PlayHapticsOnHoverExited: 0
   m_HapticHoverExitIntensity: 0
   m_HapticHoverExitDuration: 0
+  m_PlayHapticsOnHoverCanceled: 0
+  m_HapticHoverCancelIntensity: 0
+  m_HapticHoverCancelDuration: 0
 --- !u!114 &844257895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,6 +605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   side: 2
   controllerState: 0
+  shortestDistance: 0
 --- !u!114 &844257896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,17 +619,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UpdateTrackingType: 0
+  m_EnableInputTracking: 1
   m_EnableInputActions: 1
+  m_ModelPrefab: {fileID: 0}
+  m_ModelParent: {fileID: 0}
+  m_Model: {fileID: 0}
+  m_AnimateModel: 0
+  m_ModelSelectTransition: 
+  m_ModelDeSelectTransition: 
   m_ControllerNode: 5
   m_SelectUsage: 3
   m_ActivateUsage: 2
   m_UIPressUsage: 2
   m_AxisToPressThreshold: 0.1
-  m_ModelPrefab: {fileID: 0}
-  m_ModelTransform: {fileID: 0}
-  m_AnimateModel: 0
-  m_ModelSelectTransition: 
-  m_ModelDeSelectTransition: 
+  m_RotateAnchorLeft: 16
+  m_RotateAnchorRight: 17
+  m_MoveObjectIn: 14
+  m_MoveObjectOut: 15
+  m_PoseProvider: {fileID: 0}
 --- !u!1 &1062532521
 GameObject:
   m_ObjectHideFlags: 0
@@ -934,22 +969,59 @@ MonoBehaviour:
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_OnFirstHoverEnter:
+  m_InteractionLayers:
+    m_Bits: 4294967295
+  m_SelectMode: 0
+  m_CustomReticle: {fileID: 0}
+  m_FirstHoverEntered:
     m_PersistentCalls:
       m_Calls: []
-  m_OnHoverEnter:
+  m_LastHoverExited:
     m_PersistentCalls:
       m_Calls: []
-  m_OnHoverExit:
+  m_HoverEntered:
     m_PersistentCalls:
       m_Calls: []
-  m_OnLastHoverExit:
+  m_HoverExited:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSelectEnter:
+  m_FirstSelectEntered:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSelectExit:
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
     m_PersistentCalls:
       m_Calls: []
   m_OnActivate:
@@ -958,7 +1030,6 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_CustomReticle: {fileID: 0}
 --- !u!1 &1499374236
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,7 +1060,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serialController: {fileID: 517745186}
-  blockManager: {fileID: 1904253675}
+  controller: {fileID: 0}
+  toolController: {fileID: 0}
+  controllerSide: 0
+  thumbState: 0
+  indexState: 0
+  middleState: 0
+  thumbRotation: {fileID: 0}
+  indexRotation: {fileID: 0}
+  middleRotation: {fileID: 0}
+  thumbCollision: {fileID: 0}
+  indexCollision: {fileID: 0}
+  middleCollision: {fileID: 0}
 --- !u!4 &1499374238
 Transform:
   m_ObjectHideFlags: 0
@@ -1162,42 +1244,68 @@ MonoBehaviour:
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 4294967295
   m_AttachTransform: {fileID: 0}
+  m_KeepSelectedTargetValid: 1
   m_StartingSelectedInteractable: {fileID: 0}
-  m_OnHoverEnter:
+  m_HoverEntered:
     m_PersistentCalls:
       m_Calls: []
-  m_OnHoverExit:
+  m_HoverExited:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSelectEnter:
+  m_SelectEntered:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSelectExit:
+  m_SelectExited:
     m_PersistentCalls:
       m_Calls: []
-  m_ToggleSelect: 0
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectActionTrigger: 0
   m_HideControllerOnSelect: 0
-  m_PlayAudioClipOnSelectEnter: 0
-  m_AudioClipForOnSelectEnter: {fileID: 0}
-  m_PlayAudioClipOnSelectExit: 0
-  m_AudioClipForOnSelectExit: {fileID: 0}
-  m_PlayAudioClipOnHoverEnter: 0
-  m_AudioClipForOnHoverEnter: {fileID: 0}
-  m_PlayAudioClipOnHoverExit: 0
-  m_AudioClipForOnHoverExit: {fileID: 0}
-  m_PlayHapticsOnSelectEnter: 0
+  m_AllowHoveredActivate: 0
+  m_PlayAudioClipOnSelectEntered: 0
+  m_AudioClipForOnSelectEntered: {fileID: 0}
+  m_PlayAudioClipOnSelectExited: 0
+  m_AudioClipForOnSelectExited: {fileID: 0}
+  m_PlayAudioClipOnSelectCanceled: 0
+  m_AudioClipForOnSelectCanceled: {fileID: 0}
+  m_PlayAudioClipOnHoverEntered: 0
+  m_AudioClipForOnHoverEntered: {fileID: 0}
+  m_PlayAudioClipOnHoverExited: 0
+  m_AudioClipForOnHoverExited: {fileID: 0}
+  m_PlayAudioClipOnHoverCanceled: 0
+  m_AudioClipForOnHoverCanceled: {fileID: 0}
+  m_PlayHapticsOnSelectEntered: 0
   m_HapticSelectEnterIntensity: 0
   m_HapticSelectEnterDuration: 0
-  m_PlayHapticsOnSelectExit: 0
+  m_PlayHapticsOnSelectExited: 0
   m_HapticSelectExitIntensity: 0
   m_HapticSelectExitDuration: 0
-  m_PlayHapticsOnHoverEnter: 0
+  m_PlayHapticsOnSelectCanceled: 0
+  m_HapticSelectCancelIntensity: 0
+  m_HapticSelectCancelDuration: 0
+  m_PlayHapticsOnHoverEntered: 0
   m_HapticHoverEnterIntensity: 0
   m_HapticHoverEnterDuration: 0
-  m_PlayHapticsOnHoverExit: 0
+  m_PlayHapticsOnHoverExited: 0
   m_HapticHoverExitIntensity: 0
   m_HapticHoverExitDuration: 0
+  m_PlayHapticsOnHoverCanceled: 0
+  m_HapticHoverCancelIntensity: 0
+  m_HapticHoverCancelDuration: 0
 --- !u!114 &1858142781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1212,6 +1320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   side: 1
   controllerState: 0
+  shortestDistance: 0
 --- !u!114 &1858142782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1225,17 +1334,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UpdateTrackingType: 0
+  m_EnableInputTracking: 1
   m_EnableInputActions: 1
+  m_ModelPrefab: {fileID: 0}
+  m_ModelParent: {fileID: 0}
+  m_Model: {fileID: 0}
+  m_AnimateModel: 0
+  m_ModelSelectTransition: 
+  m_ModelDeSelectTransition: 
   m_ControllerNode: 4
   m_SelectUsage: 3
   m_ActivateUsage: 2
   m_UIPressUsage: 2
   m_AxisToPressThreshold: 0.1
-  m_ModelPrefab: {fileID: 0}
-  m_ModelTransform: {fileID: 0}
-  m_AnimateModel: 0
-  m_ModelSelectTransition: 
-  m_ModelDeSelectTransition: 
+  m_RotateAnchorLeft: 16
+  m_RotateAnchorRight: 17
+  m_MoveObjectIn: 14
+  m_MoveObjectOut: 15
+  m_PoseProvider: {fileID: 0}
 --- !u!1 &1904253673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1290,6 +1406,7 @@ MonoBehaviour:
   lengthInMeters: 0.5
   widthInMeters: 0.5
   heightInMeters: 0.5
+  hasSculptureBeenGenerated: 0
 --- !u!114 &1904253676
 MonoBehaviour:
   m_ObjectHideFlags: 0

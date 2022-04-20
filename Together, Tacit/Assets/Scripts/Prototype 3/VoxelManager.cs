@@ -20,7 +20,7 @@ public class VoxelManager : MonoBehaviour
     // Public sculpture parameters.
     public Material material;
     public MARCHING_MODE mode;
-    public STARTING_MODEL startingModel = STARTING_MODEL.CUBE;
+    public STARTING_MODEL startingModel;
     // Dimension variables.
     public float playAreaDimensions = 2.0f;
     public float sculptureDimensions = 0.02f;
@@ -134,6 +134,7 @@ public class VoxelManager : MonoBehaviour
         meshObject.AddComponent<MeshRenderer>();
         meshObject.AddComponent<MeshCollider>();
         meshObject.AddComponent<XRSimpleInteractable>();
+        meshObject.AddComponent<Rigidbody>();
 
         meshObject.GetComponent<Renderer>().material = material;
         meshObject.GetComponent<MeshFilter>().mesh = mesh;
