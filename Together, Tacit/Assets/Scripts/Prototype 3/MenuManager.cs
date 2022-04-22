@@ -91,6 +91,10 @@ public class MenuManager : MonoBehaviour
 
     public void SetMenuToMain()
     {
+        // To ensure they close correctly, manually hide both calibration menus.
+        leftCalibratePanel.Hide();
+        rightCalibratePanel.Hide();
+
         // Sets the current panel to the main menu.
         SetCurrent(mainMenuPanel);
     }

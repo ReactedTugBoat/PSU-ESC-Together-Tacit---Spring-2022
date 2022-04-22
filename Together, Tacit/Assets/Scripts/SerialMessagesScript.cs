@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public enum ControllerSide {
@@ -16,6 +17,7 @@ public class SerialMessagesScript : MonoBehaviour
     public HandToolController toolController;
     // NOTE: Script defaults to left controller.
     public ControllerSide controllerSide = ControllerSide.Left;
+    private bool isControllerConnected = false;
     // PRIVATE VARIABLES.
     // Current finger flex values.
     private float thumbFlex;
@@ -47,7 +49,22 @@ public class SerialMessagesScript : MonoBehaviour
 
     void Start()
     {
+        // Determine the COM port for the given controller from the PROPERTIES file.
+        // This should be set prior to running the program, and is only used when this
+        // hand is set to use a Haptic Glove, as opposed to an Oculus Touch controller.
+        string propertiesPath = Application.dataPath + "/PROPERTIES.txt";
+
+        // The properties are read using a StreamReader, in order to parse each line individually.
+        StreamReader reader = new StreamReader(propertiesPath);
+
+
+
+        // Once reading from the PROPERTIES file has finished, close the StreamReader.
+        reader.Close();
+
         // Stagger the frame counters between the left and right hands.
+        // This helps to prevent messages from becoming cluttered between the left and right
+        // controllers, and lowers the amount of messages that are dropped as a result.
         if (controllerSide == ControllerSide.Left) {
             frameCounter = 0;
         } else {
@@ -55,7 +72,8 @@ public class SerialMessagesScript : MonoBehaviour
         }
     }
     
-    void Update() {
+    void Update()
+    {
         // Update finger states based on current collision states.
         thumbState = thumbCollision.collisionState;
         indexState = indexCollision.collisionState;
@@ -144,10 +162,13 @@ public class SerialMessagesScript : MonoBehaviour
 
     void OnConnectionEvent(bool success)
     {
-        if (success)
-            Debug.Log("Connection established");
-        else
-            Debug.Log("Connection attempt failed or disconnection detected");
+        if (success) {
+            // Debug.Log("Connection established");
+            isControllerConnected = true;
+        } else {
+            // Debug.Log("Connection attempt failed or disconnection detected");
+            isControllerConnected = false;
+        }
     }
 
     private void BuildHapticMessage(HandHapticController controller,
@@ -223,6 +244,16 @@ public class SerialMessagesScript : MonoBehaviour
         areMinFlexValuesSet = true;
     }
 
+    public bool IsControllerConnected() {
+        // Returns whether the controller is currently found by the Serial Controller.
+        if (isControllerConnected) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Method to map a float number within a range (a1 to a2) to a new range (b1 to b2).
     float map(float s, float a1, float a2, float b1, float b2)
     {
         return b1 + (s-a1)*(b2-b1)/(a2-a1);

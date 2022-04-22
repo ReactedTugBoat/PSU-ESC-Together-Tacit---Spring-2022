@@ -1,0 +1,27 @@
+# !!READ ME!!
+# Before running the Together, Tacit program with the Haptic Gloves,
+# make sure to set the COM ports within this PROPERTIES file correctly.
+# Otherwise, the program will be unable to connect to the gloves.
+#
+# To locate and change the COM ports prior to running the program...
+#   1) Open up the Windows Device Manager.
+#        - Press the Windows key to open the search bar.
+#        - Search for "Device Manager" and open the first result.
+#   2) Scroll down to the tab labeled "Ports (COM & LPT)" and expand it.
+#   3) Plug in the first controller (either left or right).
+#        - A new device should appear under the "Ports" tab.
+#        - Keep track of the name of this new device (COM4, COM12, ect...)
+#   4) Set the COM port of the controller within this file to the
+#      name of the device in the Device Manager.
+#        - It should match the listed name exactly (including case)
+#        - ex. "left-controller-com-port=COM11"
+#   5) Repeat steps 3 and 4 for the other controller (if using two).
+#        - If one or both hands are using Oculus Quest controllers,
+#        - the property field can be left blank.
+#        - ex. "left-controller-com-port="
+#   6) Save this file, then restart the program.
+#
+# Properties:
+
+left-controller-com-port=
+right-controller-com-port=

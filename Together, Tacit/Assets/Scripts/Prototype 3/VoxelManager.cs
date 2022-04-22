@@ -19,8 +19,8 @@ public class VoxelManager : MonoBehaviour
     // PUBLIC VARIABLES.
     // Public sculpture parameters.
     public Material material;
-    public MARCHING_MODE mode;
-    public STARTING_MODEL startingModel;
+    private MARCHING_MODE mode;
+    private STARTING_MODEL startingModel;
     // Dimension variables.
     public float playAreaDimensions = 2.0f;
     public float sculptureDimensions = 0.02f;
@@ -54,10 +54,11 @@ public class VoxelManager : MonoBehaviour
         //   - Cube sculpture shape
         //   - 80 voxel resolution in x, y, and z dimensions
         //   - Cube-based voxel marching
+        //   - 2m x 2m x 2m play area
         // In the future, these could be stored and adjusted in a constants file, but for now
         // they are simply set and stored locally within this file.
         mode = MARCHING_MODE.CUBES;
-        startingModel = STARTING_MODEL.CUBE;
+        startingModel = STARTING_MODEL.SPHERE;
         resolutionInVoxels = 80;
 
         // Generate the mesh stored within this manager.
@@ -134,7 +135,6 @@ public class VoxelManager : MonoBehaviour
         meshObject.AddComponent<MeshRenderer>();
         meshObject.AddComponent<MeshCollider>();
         meshObject.AddComponent<XRSimpleInteractable>();
-        meshObject.AddComponent<Rigidbody>();
 
         meshObject.GetComponent<Renderer>().material = material;
         meshObject.GetComponent<MeshFilter>().mesh = mesh;
@@ -344,5 +344,10 @@ public class VoxelManager : MonoBehaviour
         } else {
             return false;
         }
+    }
+
+    public void SetCurrentModelType(STARTING_MODEL modelType) {
+        // Changes the currently set starting model, which will update when the sculpture is reset.
+        startingModel = modelType;
     }
 }
