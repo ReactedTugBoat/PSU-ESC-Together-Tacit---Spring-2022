@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using MarchingCubesProject;
-using UnityEditor.Formats.Fbx.Exporter;
 
 public enum MARCHING_MODE {
     CUBES,
@@ -357,11 +355,10 @@ public class VoxelManager : MonoBehaviour
     public void SaveSculpture()
     {
         // Method to save the current sculpture to a local folder "Saved Sculptures".
-        // Uses the Unity FBX Exporter package.
+        // Uses the custom plugin UnityFBXExporter.
         // Files are saved using the current date and time, to distinguish them from each other, in the following format:
         //   MM-dd-yyyy_HH-mm-ss (ex. 04-25-2022_04-34-12)
         string filePath = Path.Combine((Application.dataPath + "/Saved Sculptures"), $"{DateTime.Now.ToString("MM-dd-yyyy_HH-mm-ss")}.fbx");
-        Debug.Log(filePath);
-        ModelExporter.ExportObject(filePath, meshObject);
+        UnityFBXExporter.FBXExporter.ExportGameObjToFBX(meshObject, filePath);
     }
 }
