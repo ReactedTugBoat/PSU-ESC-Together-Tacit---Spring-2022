@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public enum ControllerSide {
@@ -44,23 +45,88 @@ public class SerialMessagesScript : MonoBehaviour
     public SculptureCollisionBox thumbCollision;
     public SculptureCollisionBox indexCollision;
     public SculptureCollisionBox middleCollision;
-
+    // Counters and stored string values.
     private int frameCounter;
+    private string comPort;
+    private bool isComPortFound = false;
 
-    void Start()
+    void Awake()
     {
         // Determine the COM port for the given controller from the PROPERTIES file.
         // This should be set prior to running the program, and is only used when this
         // hand is set to use a Haptic Glove, as opposed to an Oculus Touch controller.
         string propertiesPath = Application.dataPath + "/PROPERTIES.txt";
 
-        // The properties are read using a StreamReader, in order to parse each line individually.
+        // The properties are read using a StreamReader, then stored locally.
         StreamReader reader = new StreamReader(propertiesPath);
+        string propertiesString = reader.ReadToEnd();
 
-
-
-        // Once reading from the PROPERTIES file has finished, close the StreamReader.
+        // Once reading the PROPERTIES file has finished, close the stream reader.
         reader.Close();
+
+        // Split the PROPERTIES file up line-by-line.
+        string[] propertiesLines = propertiesString.Split('\n');
+
+        // Each hand has a specific tag associated with its COM port. Determine which tag to use
+        // based on the local value of controllerSide.
+        string propertiesTag;
+        if (controllerSide == ControllerSide.Left) {
+            propertiesTag = "left-controller-com-port";
+        } else {
+            propertiesTag = "right-controller-com-port";
+        }
+
+        // Run through the lines of the PROPERTIES file and check for matches with the given tag.
+        foreach (string line in propertiesLines) {
+            // If the Com port has been found, break from the loop;
+            if (isComPortFound) {
+                break;
+            }
+
+            // If the line begins with a "#" (denoting a comment line), skip it.
+            if (line[0] == '#') {
+                continue;
+            }
+
+            // Otherwise, check if the line contains the associated tag.
+            if (line.Contains(propertiesTag)) {
+                // Split the line according to "=" characters.
+                // All properties are formatted as follows, so this should be consistent:
+                //   ex. "left-controller-com-port=COM8"
+                string[] splitProperty = line.Split('=');
+
+                // If the COM field is left as whitespace (output from .Split()), set the COM port to an empty string and break.
+                if (String.IsNullOrWhiteSpace(splitProperty[1])) {
+                    comPort = "";
+                    isComPortFound = true;
+                    continue;
+                }
+
+                // Store the second split field, containing the COM port, and check if it is equal to COM10 or above.
+                // if so, add an additional "\\.\" string just before the port name:
+                //   ex. "COM12" becomes "\\.\COM12"
+                // This is needed for the Ardity plugin to function properly with these higher COM ports.
+                comPort = splitProperty[1];
+                string comPortNum = comPort.Replace("COM", "");
+                if (Convert.ToInt32(comPortNum) > 9) 
+                {
+                    // A Verbatim string is used here to allow the writing of \\.\ in quotations.
+                    comPort = @"\\.\" + comPort;
+                }
+
+                // Set the bool indicating the COM port has been found.
+                isComPortFound = true;
+            }
+        }
+
+        // Set the COM port of the Serial controller to the value read from the PROPERTIES file.
+        if (isComPortFound) {
+            serialController.portName = comPort;
+        }
+        // If a COM port was not found correctly, flag an error.
+        else {
+            Debug.LogError("ERROR: COM port name unrecognized for " + controllerSide + " hand controller.");
+        }
 
         // Stagger the frame counters between the left and right hands.
         // This helps to prevent messages from becoming cluttered between the left and right

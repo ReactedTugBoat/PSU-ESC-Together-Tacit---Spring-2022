@@ -22,12 +22,6 @@ public class MenuManager : MonoBehaviour
         SetupPanels();
     }
 
-    public void Update()
-    {
-        // When a user depresses the menu button on the left controller, toggle the menu's visibility.
-        
-    }
-
     private void SetupPanels()
     {
         // Locate and initialize each menu panel within the manager's children.

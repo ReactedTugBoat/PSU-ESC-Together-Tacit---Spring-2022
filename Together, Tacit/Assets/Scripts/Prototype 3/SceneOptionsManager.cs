@@ -129,4 +129,31 @@ public class SceneOptionsManager : MonoBehaviour
             isRightSetToGlove = true;
         }
     }
+
+    public void ResetPlayerPositionInSpace() {
+        // Adjusts the player's current position in space to be the origin (0,y,0).
+        // This is achieved by shifting the position of the XR rig by the player's current position.
+        // First, find the XR rig and Main Camera within the scene.
+        GameObject xrRig = GameObject.Find("XR Rig");
+        GameObject mainCamera = GameObject.Find("Main Camera");
+
+        // Set the rig be centered at the user's current position by adjusting the X and Z coordinates,
+        // such that the user's current position sits at (0,y,0).
+        xrRig.transform.SetPositionAndRotation(
+            new Vector3(
+                xrRig.transform.position.x - mainCamera.transform.position.x,
+                xrRig.transform.position.y,
+                xrRig.transform.position.z - mainCamera.transform.position.z
+            ),
+            xrRig.transform.rotation
+        );
+
+    }
+
+    public void SaveCurrentSculpture() {
+        // Saves the currently made sculpture to a local file.
+        // At the moment, there currently isn't any behavior to notify the user when this
+        // is done successfully, but it is completed with every button press.
+        voxelManager.SaveSculpture();
+    }
 }
