@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class SceneOptionsManager : MonoBehaviour
 {
@@ -142,7 +143,7 @@ public class SceneOptionsManager : MonoBehaviour
         xrRig.transform.SetPositionAndRotation(
             new Vector3(
                 xrRig.transform.position.x - mainCamera.transform.position.x,
-                xrRig.transform.position.y,
+                xrRig.transform.position.y - mainCamera.transform.position.y + xrRig.GetComponent<XRRig>().cameraYOffset,
                 xrRig.transform.position.z - mainCamera.transform.position.z
             ),
             xrRig.transform.rotation

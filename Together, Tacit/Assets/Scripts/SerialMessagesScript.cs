@@ -107,11 +107,15 @@ public class SerialMessagesScript : MonoBehaviour
                 //   ex. "COM12" becomes "\\.\COM12"
                 // This is needed for the Ardity plugin to function properly with these higher COM ports.
                 comPort = splitProperty[1];
+                // Remove a whitespace character from the end of the string, which results from how .Split deals with
+                // splitting up the parts of the string. Without this, Ardity won't recognize the correct port name
+                // and will fail to connect at runtime.
+                comPort = comPort.Remove(comPort.Length - 1, 1);
                 string comPortNum = comPort.Replace("COM", "");
                 if (Convert.ToInt32(comPortNum) > 9) 
                 {
                     // A Verbatim string is used here to allow the writing of \\.\ in quotations.
-                    comPort = @"\\.\" + comPort;
+                    comPort = "\\\\.\\" + comPort;
                 }
 
                 // Set the bool indicating the COM port has been found.
@@ -190,7 +194,6 @@ public class SerialMessagesScript : MonoBehaviour
         }
 
         frameCounter++;
-
     }
 
     // Whenever a message arrives from the Adruino (Ideally, once a frame, though actual timings may vary),
