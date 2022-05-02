@@ -1,6 +1,7 @@
 # Together, Tacit
 
 Created as a part of a Spring 2022 Penn State Capstone project.
+
 https://sites.psu.edu/lfshowcasesp22/2022/04/28/together-tacit-vr-glove/
 
 ## Description
@@ -28,27 +29,27 @@ Noah Black - contact at noahblack0425@gmail.com
 
 ## Version History
 
-* Beta 0.3v
-    * Added a rectangular starting block, with more fine detail 0.1v
-    * Added a reset button
-    * Began work on haptic feedback from scuplture
-    * Began work on enabling/disabling sculpting using Oculus controllers
+Beta 0.3v
+  * Added a rectangular starting block, with more fine detail 0.1v
+  * Added a reset button
+  * Began work on haptic feedback from scuplture
+  * Began work on enabling/disabling sculpting using Oculus controllers
 
-* Beta 0.2v
-    * New Plugin: Ardity
-          * Used to make communication between Arduino software and Unity possible
+Beta 0.2v
+  * New Plugin: Ardity
+    * Used to make communication between Arduino software and Unity possible
 
-* Beta 0.1v
-    * Initialized project files based the "VR-Button" public files (see Acknowledgements below)
-    * Added a simple block of removable cubes
+Beta 0.1v
+  * Initialized project files based the "VR-Button" public files (see Acknowledgements below)
+  * Added a simple block of removable cubes
 
-* Release 1.0v
-    * Full release of the Together, Tacit project, including the following options:
-          * Virtual sculpting environment (2m x 2m x 2m)
-          * Smooth sculpting, rendered in real time
-          * Tools to carve, add, and interact with virtual sculptures
-          * Options and customizations for play
-          * .fbx file export for any sculptures made
+Release 1.0v
+  * Full release of the Together, Tacit project, including the following options:
+    * Virtual sculpting environment (2m x 2m x 2m)
+    * Smooth sculpting, rendered in real time
+    * Tools to carve, add, and interact with virtual sculptures
+    * Options and customizations for play
+    * .fbx file export for any sculptures made
 
 ## Acknowledgments
 
